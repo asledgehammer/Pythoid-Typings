@@ -1,41 +1,5 @@
 from typing import Any, overload
-from java.io import DataInputStream, DataOutputStream, File, BufferedReader
-from java.lang import Class, Double, Integer, Boolean, Short
-from java.lang.reflect import Field, Method
-from java.util import ArrayList, HashMap, List, Stack
-from java.util.function import Predicate
-from se.krka.kahlua.vm import KahluaTable, LuaClosure, LuaCallFrame, Coroutine
-from zombie import BaseAmbientStreamManager, GameTime, SandboxOptions, BaseSoundManager, WorldSoundManager
 from zombie.Lua import LuaManager
-from zombie.ai.sadisticAIDirector import SleepingEvent
-from zombie.audio import BaseSoundBank
-from zombie.characters import IsoPlayer, IsoGameCharacter, IsoZombie, Faction, SurvivorDesc
-from zombie.characters.BodyDamage import BodyPart
-from zombie.characters.skills import PerkFactory
-from zombie.core import Core, PerformanceSettings, Language, SpriteRenderer
-from zombie.core.raknet import UdpConnection
-from zombie.core.skinnedmodel.model import Model
-from zombie.core.skinnedmodel.population import BeardStyles, HairStyles
-from zombie.core.textures import Texture
-from zombie.core.znet import SteamWorkshopItem
-from zombie.debug import DebugOptions
-from zombie.erosion import ErosionMain
-from zombie.gameStates import GameState, AnimationViewerState, AttachmentEditorState, ChooseGameInfo
-from zombie.inventory import InventoryItem, ItemContainer
-from zombie.iso import IsoGridSquare, IsoObject, BuildingDef, RoomDef, ContainerOverlays, TileOverlays, IsoDirections, IsoCell, IsoMarkers, IsoPuddles, SearchMode, IsoMetaGrid, IsoWorld, WorldMarkers
-from zombie.iso.areas import SafeHouse
-from zombie.iso.areas.isoregion import IsoRegionsRenderer
-from zombie.iso.objects import IsoDeadBody
-from zombie.iso.sprite import IsoSprite, IsoSpriteManager
-from zombie.iso.weather import ClimateManager, ClimateMoon
-from zombie.network import GameClient, ServerOptions, ServerSettingsManager, Server
-from zombie.popman import ZombiePopulationRenderer
-from zombie.radio import RadioAPI, ZomboidRadio
-from zombie.radio.StorySounds import SLSoundManager
-from zombie.scripting import ScriptManager
-from zombie.scripting.objects import VehicleScript, Item, Recipe, EvolvedRecipe
-from zombie.ui import UIElement, TextManager
-from zombie.vehicles import BaseVehicle, EditVehicleState
 
 class Pythoid:
 
@@ -46,2188 +10,1653 @@ class Pythoid:
     def invoke(instance: object, methodName: str, *args) -> Any: ...
 
     @staticmethod
-    def invokeStatic(clazz: Class, methodName: str, *args) -> Any: ...
+    def invokeStatic(clazz: object, methodName: str, *args) -> Any: ...
 
     @staticmethod
     def getField(instance: object, fieldName: str) -> Any: ...
 
     @staticmethod
-    def getStaticField(clazz: Class, fieldName: str) -> Any: ... 
+    def getStaticField(clazz: object, fieldName: str) -> Any: ... 
 
 
-# @LuaMethod
-def Render3DItem(self, item: InventoryItem, sq: IsoGridSquare, xoffset: float, yoffset: float, zoffset: float, rotation: float) -> None: ...
+def getDebug():
+  return LuaManager.GlobalObject.getDebug()
 
-# @LuaMethod
-def SyncXp(self, player: IsoPlayer) -> None: ...
+def save(var0):
+  return LuaManager.GlobalObject.save(var0)
 
-# @LuaMethod
-def addBloodSplat(self, sq: IsoGridSquare, nbr: int) -> None: ...
+def istype(var0, var1):
+  return LuaManager.GlobalObject.istype(var0, var1)
 
-# @LuaMethod
-def addSound(self, source: IsoObject, x: int, y: int, z: int, radius: int, volume: int) -> None: ...
+def getLineNumber(var0):
+  return LuaManager.GlobalObject.getLineNumber(var0)
 
-# @LuaMethod
-def addZombieSitting(self, x: int, y: int, z: int) -> None: ...
+def replaceWith(var0, var1, var2):
+  return LuaManager.GlobalObject.replaceWith(var0, var1, var2)
 
-# @LuaMethod
-def addZombiesEating(self, x: int, y: int, z: int, totalZombies: int, skeletonBody: bool) -> None: ...
+def getTimestamp():
+  return LuaManager.GlobalObject.getTimestamp()
 
-# @LuaMethod
-def addZombiesInBuilding(self, arg0: BuildingDef, totalZombies: int, outfit: str, room: RoomDef, femaleChance: Integer) -> ArrayList[IsoZombie]: ...
+def getZone(var0, var1, var2):
+  return LuaManager.GlobalObject.getZone(var0, var1, var2)
 
-# @LuaMethod
-def addZombiesInOutfitArea(self, x1: int, y1: int, x2: int, y2: int, z: int, totalZombies: int, outfit: str, femaleChance: Integer) -> ArrayList[IsoZombie]: ...
-
-# @LuaMethod
-def checkServerName(self, name: str) -> str: ...
-
-# @LuaMethod
-def getAverageFPS(self) -> Double: ...
-
-# @LuaMethod
-def getContainerOverlays(self) -> ContainerOverlays: ...
-
-# @LuaMethod
-def getTileOverlays(self) -> TileOverlays: ...
-
-# @LuaMethod
-def screenZoomIn(self) -> None: ...
-
-# @LuaMethod
-def screenZoomOut(self) -> None: ...
-
-# @LuaMethod
-def sendAddXp(self, player: IsoPlayer, perk: PerkFactory.Perk, amount: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def AddNoiseToken(sq: IsoGridSquare, radius: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def AddWorldSound(player: IsoPlayer, radius: int, volume: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def InvMngGetItem(itemId: int, itemType: str, player: IsoPlayer) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def InvMngRemoveItem(itemId: int, player: IsoPlayer) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def SendCommandToServer(command: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
 @overload
-def ZombRand(max: float) -> float: ...
+def getText(var0):
+  return LuaManager.GlobalObject.getText(var0)
 
-# @LuaMethod
-@staticmethod
 @overload
-def ZombRand(min: float, max: float) -> float: ...
+def getText(var0, var1):
+  return LuaManager.GlobalObject.getText(var0, var1)
 
-# @LuaMethod
-@staticmethod
-def ZombRandBetween(min: float, max: float) -> float: ...
-
-# @LuaMethod
-@staticmethod
-def ZombRandFloat(min: float, max: float) -> float: ...
-
-# @LuaMethod
-@staticmethod
-def acceptFactionInvite(faction: Faction, host: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def acceptSafehouseInvite(safehouse: SafeHouse, host: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def acceptTrading(you: IsoPlayer, other: IsoPlayer, accept: bool) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def activateJoypadOnSteamDeck() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def activateSteamOverlayToWebPage(url: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def activateSteamOverlayToWorkshop() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def activateSteamOverlayToWorkshopItem(itemID: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def activateSteamOverlayToWorkshopUser() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def addAllBurntVehicles() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def addAllSmashedVehicles() -> None: ...
-
-# @LuaMethod
-@staticmethod
 @overload
-def addAllVehicles() -> None: ...
+def getText(var0, var1, var2):
+  return LuaManager.GlobalObject.getText(var0, var1, var2)
 
-@staticmethod
 @overload
-def addAllVehicles(predicate: Predicate[VehicleScript]) -> None: ...
+def getText(var0, var1, var2, var3, var4):
+  return LuaManager.GlobalObject.getText(var0, var1, var2, var3, var4)
 
-# @LuaMethod
-@staticmethod
-def addCarCrash() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def addPhysicsObject() -> BaseVehicle: ...
-
-# @LuaMethod
-@staticmethod
-def addTicket(author: str, message: str, ticketID: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def addUserlog(user: str, type: str, text: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def addVehicle(script: str) -> BaseVehicle: ...
-
-# @LuaMethod
-@staticmethod
-def addVehicleDebug(scriptName: str, dir: IsoDirections, skinIndex: Integer, sq: IsoGridSquare) -> BaseVehicle: ...
-
-# @LuaMethod
-@staticmethod
-def addVirtualZombie(x: int, y: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def addWarningPoint(user: str, reason: str, amount: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
 @overload
-def addZombiesInOutfit(x: int, y: int, z: int, totalZombies: int, outfit: str, femaleChance: Integer) -> ArrayList[IsoZombie]: ...
+def getText(var0, var1, var2, var3):
+  return LuaManager.GlobalObject.getText(var0, var1, var2, var3)
 
-# @LuaMethod
-@staticmethod
+def getTimeInMillis():
+  return LuaManager.GlobalObject.getTimeInMillis()
+
 @overload
-def addZombiesInOutfit(x: int, y: int, z: int, totalZombies: int, outfit: str, femaleChance: Integer, isCrawler: bool, isFallOnFront: bool, isFakeDead: bool, isKnockedDown: bool, health: float) -> ArrayList[IsoZombie]: ...
+def triggerEvent(var0, var1, var2):
+  return LuaManager.GlobalObject.triggerEvent(var0, var1, var2)
 
-# @LuaMethod
-@staticmethod
-def assaultPlayer() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def attachTrailerToPlayerVehicle(playerIndex: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def backToSinglePlayer() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def breakpoint() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def canConnect() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def canInviteFriends() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def canModifyPlayerScoreboard() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def canModifyPlayerStats() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def canSeePlayerStats() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def checkModsNeedUpdate(arg0: UdpConnection) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def checkPlayerCanUseChat(chatCommand: str) -> Boolean: ...
-
-# @LuaMethod
-@staticmethod
-def checkSaveFileExists(f: str) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def checkSaveFolderExists(f: str) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def checkSavePlayerExists() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def checkStringPattern(pattern: str) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def cloneItemType(newName: str, oldName: str) -> Item: ...
-
-# @LuaMethod
-@staticmethod
-def configureLighting(darkStep: float) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def connectToServerStateCallback(button: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def connectionManagerLog(arg0: str, arg1: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
 @overload
-def copyTable(table: KahluaTable) -> KahluaTable: ...
+def triggerEvent(var0, var1):
+  return LuaManager.GlobalObject.triggerEvent(var0, var1)
 
-# @LuaMethod
-@staticmethod
 @overload
-def copyTable(to: KahluaTable, arg1: KahluaTable) -> KahluaTable: ...
+def triggerEvent(var0):
+  return LuaManager.GlobalObject.triggerEvent(var0)
 
-# @LuaMethod
-@staticmethod
-def createHordeFromTo(spawnX: float, spawnY: float, targetX: float, targetY: float, count: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def createHordeInAreaTo(spawnX: int, spawnY: int, spawnW: int, spawnH: int, targetX: int, targetY: int, count: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def createItemTransaction(item: InventoryItem, src: ItemContainer, dst: ItemContainer) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def createNewScriptItem(base: str, name: str, display: str, type: str, icon: str) -> Item: ...
-
-# @LuaMethod
-@staticmethod
-def createRandomDeadBody(square: IsoGridSquare, blood: int) -> IsoDeadBody: ...
-
-# @LuaMethod
-@staticmethod
-def createRegionFile() -> KahluaTable: ...
-
-# @LuaMethod
-@staticmethod
-def createStory(storyName: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def createTile(tile: str, square: IsoGridSquare) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def createWorld(worldName: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def createZombie(x: float, y: float, z: float, desc: SurvivorDesc, palette: int, dir: IsoDirections) -> IsoZombie: ...
-
-# @LuaMethod
-@staticmethod
-def debugFullyStreamedIn(x: int, y: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
 @overload
-def debugLuaTable(param: object) -> None: ...
+def triggerEvent(var0, var1, var2, var3, var4):
+  return LuaManager.GlobalObject.triggerEvent(var0, var1, var2, var3, var4)
 
-# @LuaMethod
-@staticmethod
 @overload
-def debugLuaTable(param: object, depth: int) -> None: ...
+def triggerEvent(var0, var1, var2, var3):
+  return LuaManager.GlobalObject.triggerEvent(var0, var1, var2, var3)
 
-# @LuaMethod
-@staticmethod
-def debugSetRoomType(roomType: Double) -> None: ...
+def createWorld(var0):
+  return LuaManager.GlobalObject.createWorld(var0)
 
-# @LuaMethod
-@staticmethod
-def deleteAllGameModeSaves(gameMode: str) -> None: ...
+def forceDisconnect():
+  return LuaManager.GlobalObject.forceDisconnect()
 
-# @LuaMethod
-@staticmethod
-def deletePlayerSave(fileName: str) -> None: ...
+def isCoopHost():
+  return LuaManager.GlobalObject.isCoopHost()
 
-# @LuaMethod
-@staticmethod
-def deleteSandboxPreset(name: str) -> None: ...
+def disconnect():
+  return LuaManager.GlobalObject.disconnect()
 
-# @LuaMethod
-@staticmethod
-def deleteSave(file: str) -> None: ...
+def getTexture(var0):
+  return LuaManager.GlobalObject.getTexture(var0)
 
-# @LuaMethod
-@staticmethod
-def disconnect() -> None: ...
+def saveModsFile():
+  return LuaManager.GlobalObject.saveModsFile()
 
-# @LuaMethod
-@staticmethod
-def doChallenge(challenge: KahluaTable) -> None: ...
+def getMyDocumentFolder():
+  return LuaManager.GlobalObject.getMyDocumentFolder()
 
-# @LuaMethod
-@staticmethod
-def doKeyPress(doIt: bool) -> None: ...
+def writeLog(var0, var1):
+  return LuaManager.GlobalObject.writeLog(var0, var1)
 
-# @LuaMethod
-@staticmethod
-def doLuaDebuggerAction(action: str) -> None: ...
+def isValidUserName(var0):
+  return LuaManager.GlobalObject.isValidUserName(var0)
 
-# @LuaMethod
-@staticmethod
-def doTutorial(tutorial: KahluaTable) -> None: ...
+def getMaxPlayers():
+  return LuaManager.GlobalObject.getMaxPlayers()
 
-# @LuaMethod
-@staticmethod
-def drawOverheadMap(ui: UIElement, zoom: float, xpos: float, ypos: float) -> None: ...
+def isValidSteamID(var0):
+  return LuaManager.GlobalObject.isValidSteamID(var0)
 
-# @LuaMethod
-@staticmethod
-def endFileInput() -> None: ...
+def InvMngRemoveItem(var0, var2):
+  return LuaManager.GlobalObject.InvMngRemoveItem(var0, var2)
 
-# @LuaMethod
-@staticmethod
-def endFileOutput() -> None: ...
+def InvMngGetItem(var0, var2, var3):
+  return LuaManager.GlobalObject.InvMngGetItem(var0, var2, var3)
 
-# @LuaMethod
-@staticmethod
-def endHelicopter() -> None: ...
+def getCell():
+  return LuaManager.GlobalObject.getCell()
 
-# @LuaMethod
-@staticmethod
-def endTextFileInput() -> None: ...
+def getSprite(var0):
+  return LuaManager.GlobalObject.getSprite(var0)
 
-# @LuaMethod
-@staticmethod
-def executeQuery(query: str, params: KahluaTable) -> None: ...
+def getSquare(var0, var2, var4):
+  return LuaManager.GlobalObject.getSquare(var0, var2, var4)
 
-# @LuaMethod
-@staticmethod
-def fileExists(filename: str) -> bool: ...
+def addUserlog(var0, var1, var2):
+  return LuaManager.GlobalObject.addUserlog(var0, var1, var2)
 
-# @LuaMethod
-@staticmethod
-def focusOnTab(id: Short) -> None: ...
+def sendClothing(var0):
+  return LuaManager.GlobalObject.sendClothing(var0)
 
-# @LuaMethod
-@staticmethod
-def forceChangeState(state: GameState) -> None: ...
+def addBloodSplat(var1, var2):
+  return LuaManager.GlobalObject.addBloodSplat(var1, var2)
 
-# @LuaMethod
-@staticmethod
-def forceDisconnect() -> None: ...
+def resumeSoundAndMusic():
+  return LuaManager.GlobalObject.resumeSoundAndMusic()
 
-# @LuaMethod
-@staticmethod
-def forceSnowCheck() -> None: ...
+def canModifyPlayerStats():
+  return LuaManager.GlobalObject.canModifyPlayerStats()
 
-# @LuaMethod
-@staticmethod
-def getAbsoluteSaveFolderName(f: str) -> str: ...
+def sendPlayerExtraInfo(var0):
+  return LuaManager.GlobalObject.sendPlayerExtraInfo(var0)
 
-# @LuaMethod
-@staticmethod
-def getAccessLevel() -> str: ...
+def sendItemsInContainer(var0, var1):
+  return LuaManager.GlobalObject.sendItemsInContainer(var0, var1)
 
-# @LuaMethod
-@staticmethod
-def getActivatedMods() -> ArrayList[str]: ...
+def isKeyDown(var0):
+  return LuaManager.GlobalObject.isKeyDown(var0)
 
-# @LuaMethod
-@staticmethod
-def getAllBeardStyles() -> ArrayList[str]: ...
+def wasKeyDown(var0):
+  return LuaManager.GlobalObject.wasKeyDown(var0)
 
-# @LuaMethod
-@staticmethod
-def getAllDecalNamesForItem(item: InventoryItem) -> ArrayList[str]: ...
+def isAccessLevel(var0):
+  return LuaManager.GlobalObject.isAccessLevel(var0)
 
-# @LuaMethod
-@staticmethod
-def getAllHairStyles(female: bool) -> ArrayList[str]: ...
+def getAllSavedPlayers():
+  return LuaManager.GlobalObject.getAllSavedPlayers()
 
-# @LuaMethod
-@staticmethod
-def getAllItems() -> ArrayList[Item]: ...
+def sendVisual(var0):
+  return LuaManager.GlobalObject.sendVisual(var0)
 
-# @LuaMethod
-@staticmethod
-def getAllItemsForBodyLocation(bodyLocation: str) -> KahluaTable: ...
+def SendCommandToServer(var0):
+  return LuaManager.GlobalObject.SendCommandToServer(var0)
 
-# @LuaMethod
-@staticmethod
-def getAllOutfits(female: bool) -> ArrayList[str]: ...
-
-# @LuaMethod
-@staticmethod
-def getAllRecipes() -> ArrayList[Recipe]: ...
-
-# @LuaMethod
-@staticmethod
-def getAllSavedPlayers() -> List[BufferedReader]: ...
-
-# @LuaMethod
-@staticmethod
-def getAllVehicles() -> ArrayList[str]: ...
-
-# @LuaMethod
-@staticmethod
-def getAmbientStreamManager() -> BaseAmbientStreamManager: ...
-
-# @LuaMethod
-@staticmethod
-def getAnimationViewerState() -> AnimationViewerState: ...
-
-# @LuaMethod
-@staticmethod
-def getAttachmentEditorState() -> AttachmentEditorState: ...
-
-# @LuaMethod
-@staticmethod
-def getBeardStylesInstance() -> BeardStyles: ...
-
-# @LuaMethod
-@staticmethod
-def getBehaviourDebugPlayer() -> IsoGameCharacter: ...
-
-# @LuaMethod
-@staticmethod
-def getButtonCount(joypad: int) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getCallframeTop(c: Coroutine) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getCameraOffX() -> float: ...
-
-# @LuaMethod
-@staticmethod
-def getCameraOffY() -> float: ...
-
-# @LuaMethod
-@staticmethod
-def getCell() -> IsoCell: ...
-
-# @LuaMethod
-@staticmethod
-def getClassField(o: object, i: int) -> Field: ...
-
-# @LuaMethod
-@staticmethod
-def getClassFieldVal(o: object, field: Field) -> object: ...
-
-# @LuaMethod
-@staticmethod
-def getClassFunction(o: object, i: int) -> Method: ...
-
-# @LuaMethod
-@staticmethod
-def getClientUsername() -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getClimateManager() -> ClimateManager: ...
-
-# @LuaMethod
-@staticmethod
-def getClimateMoon() -> ClimateMoon: ...
-
-# @LuaMethod
-@staticmethod
-def getConnectedPlayers() -> ArrayList[IsoPlayer]: ...
-
-# @LuaMethod
-@staticmethod
-def getControllerAxisCount(c: int) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getControllerAxisValue(c: int, axis: int) -> float: ...
-
-# @LuaMethod
-@staticmethod
-def getControllerButtonCount(c: int) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getControllerCount() -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getControllerDeadZone(c: int, axis: int) -> float: ...
-
-# @LuaMethod
-@staticmethod
-def getControllerGUID(joypad: int) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getControllerName(joypad: int) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getControllerPovX(c: int) -> float: ...
-
-# @LuaMethod
-@staticmethod
-def getControllerPovY(c: int) -> float: ...
-
-# @LuaMethod
-@staticmethod
-def getCore() -> Core: ...
-
-# @LuaMethod
-@staticmethod
-def getCoroutineCallframeStack(c: Coroutine, n: int) -> LuaCallFrame: ...
-
-# @LuaMethod
-@staticmethod
-def getCoroutineObjStack(c: Coroutine, n: int) -> object: ...
-
-# @LuaMethod
-@staticmethod
-def getCoroutineObjStackWithBase(c: Coroutine, n: int) -> object: ...
-
-# @LuaMethod
-@staticmethod
-def getCoroutineTop(c: Coroutine) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getCurrentCoroutine() -> Coroutine: ...
-
-# @LuaMethod
-@staticmethod
-def getCurrentUserProfileName() -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getCurrentUserSteamID() -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getDBSchema() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def getDebug() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def getDebugOptions() -> DebugOptions: ...
-
-# @LuaMethod
-@staticmethod
-def getDirectionTo(chara: IsoGameCharacter, objTarget: IsoObject) -> IsoDirections: ...
-
-# @LuaMethod
-@staticmethod
-def getEditVehicleState() -> EditVehicleState: ...
-
-# @LuaMethod
-@staticmethod
-def getErosion() -> ErosionMain: ...
-
-# @LuaMethod
-@staticmethod
-def getEvolvedRecipes() -> Stack[EvolvedRecipe]: ...
-
-# @LuaMethod
-@staticmethod
-def getFMODSoundBank() -> BaseSoundBank: ...
-
-# @LuaMethod
-@staticmethod
-def getFileInput(filename: str) -> DataInputStream: ...
-
-# @LuaMethod
-@staticmethod
-def getFileOutput(filename: str) -> DataOutputStream: ...
-
-# @LuaMethod
-@staticmethod
-def getFileReader(filename: str, createIfNull: bool) -> BufferedReader: ...
-
-# @LuaMethod
-@staticmethod
-def getFileSeparator() -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getFileWriter(filename: str, createIfNull: bool, append: bool) -> LuaManager.GlobalObject.LuaFileWriter: ...
-
-# @LuaMethod
-@staticmethod
-def getFilenameOfCallframe(c: LuaCallFrame) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getFilenameOfClosure(c: LuaClosure) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getFirstLineOfClosure(c: LuaClosure) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getFriendsList() -> KahluaTable: ...
-
-# @LuaMethod
-@staticmethod
-def getFullSaveDirectoryTable() -> KahluaTable: ...
-
-# @LuaMethod
-@staticmethod
-def getGameClient() -> GameClient: ...
-
-# @LuaMethod
-@staticmethod
-def getGameFilesInput(filename: str) -> DataInputStream: ...
-
-# @LuaMethod
-@staticmethod
-def getGameFilesTextInput(filename: str) -> BufferedReader: ...
-
-# @LuaMethod
-@staticmethod
-def getGameSpeed() -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getGameTime() -> GameTime: ...
-
-# @LuaMethod
-@staticmethod
-def getGameVersion() -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getGametimeTimestamp() -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getHairStylesInstance() -> HairStyles: ...
-
-# @LuaMethod
-@staticmethod
-def getHourMinute() -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getIsoMarkers() -> IsoMarkers: ...
-
-# @LuaMethod
-@staticmethod
-def getItemNameFromFullType(fullType: str) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getItemText(txt: str) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getJoypadAButton(joypad: int) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getJoypadAimingAxisX(joypad: int) -> float: ...
-
-# @LuaMethod
-@staticmethod
-def getJoypadAimingAxisY(joypad: int) -> float: ...
-
-# @LuaMethod
-@staticmethod
-def getJoypadBButton(joypad: int) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getJoypadBackButton(joypad: int) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getJoypadLBumper(joypad: int) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getJoypadLeftStickButton(joypad: int) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getJoypadMovementAxisX(joypad: int) -> float: ...
-
-# @LuaMethod
-@staticmethod
-def getJoypadMovementAxisY(joypad: int) -> float: ...
-
-# @LuaMethod
-@staticmethod
-def getJoypadRBumper(joypad: int) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getJoypadRightStickButton(joypad: int) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getJoypadStartButton(joypad: int) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getJoypadXButton(joypad: int) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getJoypadYButton(joypad: int) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getKeyCode(keyName: str) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getKeyName(key: int) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getLastPlayedDate(filename: str) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getLastStandPlayerFileNames() -> List[str]: ...
-
-# @LuaMethod
-@staticmethod
-def getLastStandPlayersDirectory() -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getLatestSave() -> KahluaTable: ...
-
-# @LuaMethod
-@staticmethod
-def getLineNumber(c: LuaCallFrame) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getLoadedLua(n: int) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getLoadedLuaCount() -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getLocalVarCount(c: Coroutine) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getLocalVarName(c: Coroutine, n: int) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getLocalVarStack(c: Coroutine, n: int) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getLotDirectories() -> ArrayList[str]: ...
-
-# @LuaMethod
-@staticmethod
-def getLuaDebuggerErrorCount() -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getLuaDebuggerErrors() -> ArrayList[str]: ...
-
-# @LuaMethod
-@staticmethod
-def getMPStatistics() -> KahluaTable: ...
-
-# @LuaMethod
-@staticmethod
-def getMPStatus() -> KahluaTable: ...
-
-# @LuaMethod
-@staticmethod
-def getMapDirectoryTable() -> KahluaTable: ...
-
-# @LuaMethod
-@staticmethod
-def getMapFoldersForMod(modID: str) -> ArrayList[str]: ...
-
-# @LuaMethod
-@staticmethod
-def getMapInfo(mapDir: str) -> KahluaTable: ...
-
-# @LuaMethod
-@staticmethod
-def getMaxActivePlayers() -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getMaxPlayers() -> Double: ...
-
-# @LuaMethod
-@staticmethod
-def getMethodParameter(o: Method, i: int) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getMethodParameterCount(o: Method) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getModDirectoryTable() -> KahluaTable: ...
-
-# @LuaMethod
-@staticmethod
-def getModFileReader(modId: str, filename: str, createIfNull: bool) -> BufferedReader: ...
-
-# @LuaMethod
-@staticmethod
-def getModFileWriter(modId: str, filename: str, createIfNull: bool, append: bool) -> LuaManager.GlobalObject.LuaFileWriter: ...
-
-# @LuaMethod
-@staticmethod
-def getModInfo(modDir: str) -> ChooseGameInfo.Mod: ...
-
-# @LuaMethod
-@staticmethod
-def getModInfoByID(modID: str) -> ChooseGameInfo.Mod: ...
-
-@staticmethod
-def getMods() -> List[str]: ...
-
-# @LuaMethod
-@staticmethod
-def getMouseX() -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getMouseXScaled() -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getMouseY() -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getMouseYScaled() -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getMyDocumentFolder() -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getNumActivePlayers() -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getNumClassFields(o: object) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getNumClassFunctions(o: object) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getOnlinePlayers() -> ArrayList[IsoPlayer]: ...
-
-# @LuaMethod
-@staticmethod
-def getOnlineUsername() -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getPacketCounts(category: int) -> KahluaTable: ...
-
-# @LuaMethod
-@staticmethod
-def getPerformance() -> PerformanceSettings: ...
-
-# @LuaMethod
-@staticmethod
-def getPlayer() -> IsoPlayer: ...
-
-# @LuaMethod
-@staticmethod
-def getPlayerByOnlineID(id: int) -> IsoPlayer: ...
-
-# @LuaMethod
-@staticmethod
-def getPlayerFromUsername(username: str) -> IsoPlayer: ...
-
-# @LuaMethod
-@staticmethod
-def getPlayerInfo(player: IsoPlayer) -> KahluaTable: ...
-
-# @LuaMethod
-@staticmethod
-def getPlayerScreenHeight(player: int) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getPlayerScreenLeft(player: int) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getPlayerScreenTop(player: int) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getPlayerScreenWidth(player: int) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getPublicServersList() -> KahluaTable: ...
-
-# @LuaMethod
-@staticmethod
-def getPuddlesManager() -> IsoPuddles: ...
-
-# @LuaMethod
-@staticmethod
-def getRadioAPI() -> RadioAPI: ...
-
-# @LuaMethod
-@staticmethod
-def getRadioText(txt: str) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getRadioTranslators(language: Language) -> ArrayList[str]: ...
-
-# @LuaMethod
-@staticmethod
-def getRandomUUID() -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getRecipeDisplayName(name: str) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getReconnectCountdownTimer() -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getRenderer() -> SpriteRenderer: ...
-
-# @LuaMethod
-@staticmethod
-def getSLSoundManager() -> SLSoundManager: ...
-
-# @LuaMethod
-@staticmethod
-def getSandboxFileWriter(filename: str, createIfNull: bool, append: bool) -> LuaManager.GlobalObject.LuaFileWriter: ...
-
-# @LuaMethod
-@staticmethod
-def getSandboxOptions() -> SandboxOptions: ...
-
-# @LuaMethod
-@staticmethod
-def getSandboxPresets() -> List[str]: ...
-
-# @LuaMethod
-@staticmethod
-def getSaveDirectory(folder: str) -> ArrayList[File]: ...
-
-# @LuaMethod
-@staticmethod
-def getSaveDirectoryTable() -> KahluaTable: ...
-
-# @LuaMethod
-@staticmethod
-def getSaveInfo(saveDir: str) -> KahluaTable: ...
-
-@staticmethod
-def getSaveName(file: File) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getScriptManager() -> ScriptManager: ...
-
-# @LuaMethod
-@staticmethod
-def getSearchMode() -> SearchMode: ...
-
-# @LuaMethod
-@staticmethod
-def getServerAddressFromArgs() -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getServerIP() -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getServerList() -> KahluaTable: ...
-
-# @LuaMethod
-@staticmethod
-def getServerListFile() -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getServerModData() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def getServerName() -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getServerOptions() -> ServerOptions: ...
-
-# @LuaMethod
-@staticmethod
-def getServerPasswordFromArgs() -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getServerPort() -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getServerSavedWorldVersion(saveFolder: str) -> int: ...
-
-# @LuaMethod
-@staticmethod
-def getServerSettingsManager() -> ServerSettingsManager: ...
-
-# @LuaMethod
-@staticmethod
-def getServerSpawnRegions() -> KahluaTable: ...
-
-# @LuaMethod
-@staticmethod
-def getServerStatistic() -> KahluaTable: ...
-
-# @LuaMethod
-@staticmethod
-def getServerStatisticEnable() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def getShortenedFilename(str: str) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getSleepingEvent() -> SleepingEvent: ...
-
-# @LuaMethod
-@staticmethod
-def getSoundManager() -> BaseSoundManager: ...
-
-# @LuaMethod
-@staticmethod
-def getSpecificPlayer(player: int) -> IsoPlayer: ...
-
-# @LuaMethod
-@staticmethod
-def getSprite(sprite: str) -> IsoSprite: ...
-
-# @LuaMethod
-@staticmethod
-def getSpriteManager(sprite: str) -> IsoSpriteManager: ...
-
-# @LuaMethod
-@staticmethod
-def getSquare(x: float, y: float, z: float) -> IsoGridSquare: ...
-
-# @LuaMethod
-@staticmethod
-def getSteamAvatarFromSteamID(steamID: str) -> Texture: ...
-
-# @LuaMethod
-@staticmethod
-def getSteamAvatarFromUsername(username: str) -> Texture: ...
-
-# @LuaMethod
-@staticmethod
-def getSteamIDFromUsername(username: str) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getSteamModeActive() -> Boolean: ...
-
-# @LuaMethod
-@staticmethod
-def getSteamProfileNameFromSteamID(steamID: str) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getSteamProfileNameFromUsername(username: str) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def getSteamScoreboard() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def getSteamWorkshopItemIDs() -> ArrayList[str]: ...
-
-# @LuaMethod
-@staticmethod
-def getSteamWorkshopItemMods(itemIDStr: str) -> ArrayList[ChooseGameInfo.Mod]: ...
-
-# @LuaMethod
-@staticmethod
-def getSteamWorkshopStagedItems() -> ArrayList[SteamWorkshopItem]: ...
-
-# @LuaMethod
-@staticmethod
-def getTableResult(tableName: str, numberPerPages: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
 @overload
-def getText(txt: str) -> str: ...
+def copyTable(var0, var1):
+  return LuaManager.GlobalObject.copyTable(var0, var1)
 
-# @LuaMethod
-@staticmethod
 @overload
-def getText(txt: str, arg1: object) -> str: ...
+def copyTable(var0):
+  return LuaManager.GlobalObject.copyTable(var0)
 
-# @LuaMethod
-@staticmethod
+def moduleDotType(var0, var1):
+  return LuaManager.GlobalObject.moduleDotType(var0, var1)
+
+def addVehicle(var0):
+  return LuaManager.GlobalObject.addVehicle(var0)
+
+def getPlayerFromUsername(var0):
+  return LuaManager.GlobalObject.getPlayerFromUsername(var0)
+
+def setServerStatisticEnable(var0):
+  return LuaManager.GlobalObject.setServerStatisticEnable(var0)
+
+def getReconnectCountdownTimer():
+  return LuaManager.GlobalObject.getReconnectCountdownTimer()
+
+def sendSafehouseInvite(var0, var1, var2):
+  return LuaManager.GlobalObject.sendSafehouseInvite(var0, var1, var2)
+
+def requestPacketCounts():
+  return LuaManager.GlobalObject.requestPacketCounts()
+
+def tradingUISendAddItem(var0, var1, var2):
+  return LuaManager.GlobalObject.tradingUISendAddItem(var0, var1, var2)
+
+def getServerSpawnRegions():
+  return LuaManager.GlobalObject.getServerSpawnRegions()
+
+def tradingUISendUpdateState(var0, var1, var2):
+  return LuaManager.GlobalObject.tradingUISendUpdateState(var0, var1, var2)
+
+def getPlayerByOnlineID(var0):
+  return LuaManager.GlobalObject.getPlayerByOnlineID(var0)
+
+def tradingUISendRemoveItem(var0, var1, var2):
+  return LuaManager.GlobalObject.tradingUISendRemoveItem(var0, var1, var2)
+
+def getServerStatisticEnable():
+  return LuaManager.GlobalObject.getServerStatisticEnable()
+
+def getConnectedPlayers():
+  return LuaManager.GlobalObject.getConnectedPlayers()
+
+def acceptFactionInvite(var0, var1):
+  return LuaManager.GlobalObject.acceptFactionInvite(var0, var1)
+
+def sendRequestInventory(var0):
+  return LuaManager.GlobalObject.sendRequestInventory(var0)
+
+def acceptSafehouseInvite(var0, var1):
+  return LuaManager.GlobalObject.acceptSafehouseInvite(var0, var1)
+
+def playServerSound(var0, var1):
+  return LuaManager.GlobalObject.playServerSound(var0, var1)
+
 @overload
-def getText(txt: str, arg1: object, arg2: object) -> str: ...
+def sendClientCommand(var0, var1, var2, var3):
+  return LuaManager.GlobalObject.sendClientCommand(var0, var1, var2, var3)
 
-# @LuaMethod
-@staticmethod
 @overload
-def getText(txt: str, arg1: object, arg2: object, arg3: object) -> str: ...
+def sendClientCommand(var0, var1, var2):
+  return LuaManager.GlobalObject.sendClientCommand(var0, var1, var2)
 
-# @LuaMethod
-@staticmethod
+def getPlayer():
+  return LuaManager.GlobalObject.getPlayer()
+
+def addSound(var1, var2, var3, var4, var5, var6):
+  return LuaManager.GlobalObject.addSound(var1, var2, var3, var4, var5, var6)
+
+def getAccessLevel():
+  return LuaManager.GlobalObject.getAccessLevel()
+
+def ping(var0, var1, var2, var3):
+  return LuaManager.GlobalObject.ping(var0, var1, var2, var3)
+
 @overload
-def getText(txt: str, arg1: object, arg2: object, arg3: object, arg4: object) -> str: ...
+def sendServerCommand(var0, var1, var2):
+  return LuaManager.GlobalObject.sendServerCommand(var0, var1, var2)
 
-# @LuaMethod
-@staticmethod
-def getTextManager() -> TextManager: ...
-
-# @LuaMethod
-@staticmethod
-def getTextMediaEN(txt: str) -> str: ...
-
-# @LuaMethod
-@staticmethod
 @overload
-def getTextOrNull(txt: str) -> str: ...
+def sendServerCommand(var0, var1, var2, var3):
+  return LuaManager.GlobalObject.sendServerCommand(var0, var1, var2, var3)
 
-# @LuaMethod
-@staticmethod
+def canSeePlayerStats():
+  return LuaManager.GlobalObject.canSeePlayerStats()
+
+def getDBSchema():
+  return LuaManager.GlobalObject.getDBSchema()
+
+def getTableResult(var0, var1):
+  return LuaManager.GlobalObject.getTableResult(var0, var1)
+
+def addWarningPoint(var0, var1, var2):
+  return LuaManager.GlobalObject.addWarningPoint(var0, var1, var2)
+
+def executeQuery(var0, var1):
+  return LuaManager.GlobalObject.executeQuery(var0, var1)
+
+def addTicket(var0, var1, var2):
+  return LuaManager.GlobalObject.addTicket(var0, var1, var2)
+
+def sendItemListNet(var0, var1, var2, var3, var4):
+  return LuaManager.GlobalObject.sendItemListNet(var0, var1, var2, var3, var4)
+
+def removeTicket(var0):
+  return LuaManager.GlobalObject.removeTicket(var0)
+
+def getTickets(var0):
+  return LuaManager.GlobalObject.getTickets(var0)
+
+def pauseSoundAndMusic():
+  return LuaManager.GlobalObject.pauseSoundAndMusic()
+
+def stopSound(var0):
+  return LuaManager.GlobalObject.stopSound(var0)
+
+def isKeyPressed(var0):
+  return LuaManager.GlobalObject.isKeyPressed(var0)
+
+def getServerIP():
+  return LuaManager.GlobalObject.getServerIP()
+
+def getMPStatistics():
+  return LuaManager.GlobalObject.getMPStatistics()
+
+def getServerPort():
+  return LuaManager.GlobalObject.getServerPort()
+
+def getControllerCount():
+  return LuaManager.GlobalObject.getControllerCount()
+
+def getAllItems():
+  return LuaManager.GlobalObject.getAllItems()
+
+def getGameVersion():
+  return LuaManager.GlobalObject.getGameVersion()
+
+def deleteSave(var0):
+  return LuaManager.GlobalObject.deleteSave(var0)
+
+def getServerName():
+  return LuaManager.GlobalObject.getServerName()
+
+def sendAddXp(var1, var2, var3):
+  return LuaManager.GlobalObject.sendAddXp(var1, var2, var3)
+
+def sendStitch(var0, var1, var2, var3, var4):
+  return LuaManager.GlobalObject.sendStitch(var0, var1, var2, var3, var4)
+
+def sendSplint(var0, var1, var2, var3, var4):
+  return LuaManager.GlobalObject.sendSplint(var0, var1, var2, var3, var4)
+
+def sendRemoveGlass(var0, var1, var2, var3):
+  return LuaManager.GlobalObject.sendRemoveGlass(var0, var1, var2, var3)
+
+def sendBandage(var0, var1, var2, var3, var4, var5):
+  return LuaManager.GlobalObject.sendBandage(var0, var1, var2, var3, var4, var5)
+
+def sendRemoveBullet(var0, var1, var2):
+  return LuaManager.GlobalObject.sendRemoveBullet(var0, var1, var2)
+
+def sendCleanBurn(var0, var1, var2, var3):
+  return LuaManager.GlobalObject.sendCleanBurn(var0, var1, var2, var3)
+
+def canConnect():
+  return LuaManager.GlobalObject.canConnect()
+
+def scoreboardUpdate():
+  return LuaManager.GlobalObject.scoreboardUpdate()
+
+def sendPersonalColor(var0):
+  return LuaManager.GlobalObject.sendPersonalColor(var0)
+
+def sendDisinfect(var0, var1, var2, var3):
+  return LuaManager.GlobalObject.sendDisinfect(var0, var1, var2, var3)
+
+def requestUserlog(var0):
+  return LuaManager.GlobalObject.requestUserlog(var0)
+
+def sendPing():
+  return LuaManager.GlobalObject.sendPing()
+
+def requestTrading(var0, var1):
+  return LuaManager.GlobalObject.requestTrading(var0, var1)
+
+def sendFactionInvite(var0, var1, var2):
+  return LuaManager.GlobalObject.sendFactionInvite(var0, var1, var2)
+
+def acceptTrading(var0, var1, var2):
+  return LuaManager.GlobalObject.acceptTrading(var0, var1, var2)
+
+def sendCataplasm(var0, var1, var2, var3, var4):
+  return LuaManager.GlobalObject.sendCataplasm(var0, var1, var2, var3, var4)
+
+def removeUserlog(var0, var1, var2):
+  return LuaManager.GlobalObject.removeUserlog(var0, var1, var2)
+
+def resetRegionFile():
+  return LuaManager.GlobalObject.resetRegionFile()
+
 @overload
-def getTextOrNull(txt: str, arg1: object) -> str: ...
+def getTextOrNull(var0):
+  return LuaManager.GlobalObject.getTextOrNull(var0)
 
-# @LuaMethod
-@staticmethod
 @overload
-def getTextOrNull(txt: str, arg1: object, arg2: object) -> str: ...
+def getTextOrNull(var0, var1, var2, var3):
+  return LuaManager.GlobalObject.getTextOrNull(var0, var1, var2, var3)
 
-# @LuaMethod
-@staticmethod
 @overload
-def getTextOrNull(txt: str, arg1: object, arg2: object, arg3: object) -> str: ...
+def getTextOrNull(var0, var1, var2):
+  return LuaManager.GlobalObject.getTextOrNull(var0, var1, var2)
 
-# @LuaMethod
-@staticmethod
 @overload
-def getTextOrNull(txt: str, arg1: object, arg2: object, arg3: object, arg4: object) -> str: ...
+def getTextOrNull(var0, var1, var2, var3, var4):
+  return LuaManager.GlobalObject.getTextOrNull(var0, var1, var2, var3, var4)
 
-# @LuaMethod
-@staticmethod
-def getTexture(filename: str) -> Texture: ...
+def getTextOrNull(var0, var1):
+  return LuaManager.GlobalObject.getTextOrNull(var0, var1)
 
-# @LuaMethod
-@staticmethod
-def getTextureFromSaveDir(filename: str, saveName: str) -> Texture: ...
+def getKeyCode(var0):
+  return LuaManager.GlobalObject.getKeyCode(var0)
 
-# @LuaMethod
-@staticmethod
-def getTickets(author: str) -> None: ...
+def getKeyName(var0):
+  return LuaManager.GlobalObject.getKeyName(var0)
 
-# @LuaMethod
-@staticmethod
-def getTimeInMillis() -> int: ...
+def getButtonCount(var0):
+  return LuaManager.GlobalObject.getButtonCount(var0)
 
-# @LuaMethod
-@staticmethod
-def getTimestamp() -> int: ...
+def isGamePaused():
+  return LuaManager.GlobalObject.isGamePaused()
 
-# @LuaMethod
-@staticmethod
-def getTimestampMs() -> int: ...
+def revertToKeyboardAndMouse():
+  return LuaManager.GlobalObject.revertToKeyboardAndMouse()
 
-# @LuaMethod
-@staticmethod
-def getTranslatorCredits(language: Language) -> ArrayList[str]: ...
+def saveControllerSettings(var0):
+  return LuaManager.GlobalObject.saveControllerSettings(var0)
 
-# @LuaMethod
-@staticmethod
-def getUrlInputStream(url: str) -> DataInputStream: ...
+def isJoypadConnected(var0):
+  return LuaManager.GlobalObject.isJoypadConnected(var0)
 
-# @LuaMethod
-@staticmethod
-def getVehicleById(id: int) -> BaseVehicle: ...
+def setDebugToggleControllerPluggedIn(var0):
+  return LuaManager.GlobalObject.setDebugToggleControllerPluggedIn(var0)
 
-# @LuaMethod
-@staticmethod
-def getVehicleInfo(vehicle: BaseVehicle) -> KahluaTable: ...
+def setShowPausedMessage(var0):
+  return LuaManager.GlobalObject.setShowPausedMessage(var0)
 
-# @LuaMethod
-@staticmethod
-def getVehicleZoneAt(x: int, y: int, z: int) -> IsoMetaGrid.VehicleZone: ...
+def isServer():
+  return LuaManager.GlobalObject.isServer()
 
-# @LuaMethod
-@staticmethod
-def getWorld() -> IsoWorld: ...
+def getItemNameFromFullType(var0):
+  return LuaManager.GlobalObject.getItemNameFromFullType(var0)
 
-# @LuaMethod
-@staticmethod
-def getWorldMarkers() -> WorldMarkers: ...
+def getTextMediaEN(var0):
+  return LuaManager.GlobalObject.getTextMediaEN(var0)
 
-# @LuaMethod
-@staticmethod
-def getWorldSoundManager() -> WorldSoundManager: ...
+def getRadioText(var0):
+  return LuaManager.GlobalObject.getRadioText(var0)
 
-# @LuaMethod
-@staticmethod
-def getZombieInfo(zombie: IsoZombie) -> KahluaTable: ...
+def getCurrentCoroutine():
+  return LuaManager.GlobalObject.getCurrentCoroutine()
 
-# @LuaMethod
-@staticmethod
-def getZomboidRadio() -> ZomboidRadio: ...
+def toggleBreakOnChange(var0, var1):
+  return LuaManager.GlobalObject.toggleBreakOnChange(var0, var1)
 
-# @LuaMethod
-@staticmethod
-def getZone(x: int, y: int, z: int) -> IsoMetaGrid.Zone: ...
+def isFloatingGamepadTextInputVisible():
+  return LuaManager.GlobalObject.isFloatingGamepadTextInputVisible()
 
-# @LuaMethod
-@staticmethod
-def getZones(x: int, y: int, z: int) -> ArrayList[IsoMetaGrid.Zone]: ...
+def getAllRecipes():
+  return LuaManager.GlobalObject.getAllRecipes()
 
-# @LuaMethod
-@staticmethod
-def hasBreakpoint(file: str, line: int) -> bool: ...
+def createHordeInAreaTo(var0, var1, var2, var3, var4, var5, var6):
+  return LuaManager.GlobalObject.createHordeInAreaTo(var0, var1, var2, var3, var4, var5, var6)
 
-# @LuaMethod
-@staticmethod
-def hasDataBreakpoint(table: KahluaTable, key: object) -> bool: ...
+def spawnHorde(var0, var1, var2, var3, var4, var5):
+  return LuaManager.GlobalObject.spawnHorde(var0, var1, var2, var3, var4, var5)
 
-# @LuaMethod
-@staticmethod
-def hasDataReadBreakpoint(table: KahluaTable, key: object) -> bool: ...
+def createHordeFromTo(var0, var1, var2, var3, var4):
+  return LuaManager.GlobalObject.createHordeFromTo(var0, var1, var2, var3, var4)
 
-# @LuaMethod
-@staticmethod
-def initUISystem() -> None: ...
+def setAggroTarget(var0, var1, var2):
+  return LuaManager.GlobalObject.setAggroTarget(var0, var1, var2)
 
-# @LuaMethod
-@staticmethod
+def addPhysicsObject():
+  return LuaManager.GlobalObject.addPhysicsObject()
+
+def getCallframeTop(var0):
+  return LuaManager.GlobalObject.getCallframeTop(var0)
+
+def hasDataBreakpoint(var0, var1):
+  return LuaManager.GlobalObject.hasDataBreakpoint(var0, var1)
+
+def toggleBreakOnRead(var0, var1):
+  return LuaManager.GlobalObject.toggleBreakOnRead(var0, var1)
+
+def hasBreakpoint(var0, var1):
+  return LuaManager.GlobalObject.hasBreakpoint(var0, var1)
+
+def isModActive(var0):
+  return LuaManager.GlobalObject.isModActive(var0)
+
+def require(var0):
+  return LuaManager.GlobalObject.require(var0)
+
+def sanitizeWorldName(var0):
+  return LuaManager.GlobalObject.sanitizeWorldName(var0)
+
+def getServerListFile():
+  return LuaManager.GlobalObject.getServerListFile()
+
 @overload
-def instanceItem(item: str) -> InventoryItem: ...
+def debugLuaTable(var0):
+  return LuaManager.GlobalObject.debugLuaTable(var0)
 
-# @LuaMethod
-@staticmethod
 @overload
-def instanceItem(item: Item) -> InventoryItem: ...
+def debugLuaTable(var0, var1):
+  return LuaManager.GlobalObject.debugLuaTable(var0, var1)
 
-# @LuaMethod
-@staticmethod
-def instanceof(obj: object, name: str) -> bool: ...
+def loadZomboidModel(var0, var1, var2, var3, var4):
+  return LuaManager.GlobalObject.loadZomboidModel(var0, var1, var2, var3, var4)
 
-# @LuaMethod
-@staticmethod
-def inviteFriend(steamID: str) -> None: ...
+def serverConnect(var0, var1, var2, var3, var4, var5, var6, var7):
+  return LuaManager.GlobalObject.serverConnect(var0, var1, var2, var3, var4, var5, var6, var7)
 
-# @LuaMethod
-@staticmethod
-def is64bit() -> bool: ...
+def getSaveDirectory(var0):
+  return LuaManager.GlobalObject.getSaveDirectory(var0)
 
-# @LuaMethod
-@staticmethod
-def isAccessLevel(accessLevel: str) -> bool: ...
+def getRandomUUID():
+  return LuaManager.GlobalObject.getRandomUUID()
 
-# @LuaMethod
-@staticmethod
-def isAdmin() -> bool: ...
+def getPacketCounts(var0):
+  return LuaManager.GlobalObject.getPacketCounts(var0)
 
-# @LuaMethod
-@staticmethod
-def isAltKeyDown() -> bool: ...
+def isSystemWindows():
+  return LuaManager.GlobalObject.isSystemWindows()
 
-# @LuaMethod
-@staticmethod
-def isClient() -> bool: ...
+def isSystemMacOS():
+  return LuaManager.GlobalObject.isSystemMacOS()
 
-# @LuaMethod
-@staticmethod
-def isControllerConnected(index: int) -> bool: ...
+def getSteamModeActive():
+  return LuaManager.GlobalObject.getSteamModeActive()
 
-# @LuaMethod
-@staticmethod
-def isCoopHost() -> bool: ...
+def addAllVehicles():
+  return LuaManager.GlobalObject.addAllVehicles()
 
-# @LuaMethod
-@staticmethod
-def isCtrlKeyDown() -> bool: ...
+def focusOnTab(var0):
+  return LuaManager.GlobalObject.focusOnTab(var0)
 
-# @LuaMethod
-@staticmethod
-def isCurrentExecutionPoint(file: str, line: int) -> bool: ...
+def sendSwitchSeat(var0, var1, var2, var3):
+  return LuaManager.GlobalObject.sendSwitchSeat(var0, var1, var2, var3)
 
-# @LuaMethod
-@staticmethod
-def isDebugEnabled() -> bool: ...
+def addVehicleDebug(var0, var1, var2, var3):
+  return LuaManager.GlobalObject.addVehicleDebug(var0, var1, var2, var3)
 
-# @LuaMethod
-@staticmethod
-def isDemo() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isDesktopOpenSupported() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isFloatingGamepadTextInputVisible() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isGamePaused() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isIngameState() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isItemTransactionConsistent(item: InventoryItem, src: ItemContainer, dst: ItemContainer) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isJoypadConnected(index: int) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isJoypadDown(joypad: int) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isJoypadLBPressed(joypad: int) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isJoypadLTPressed(joypad: int) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isJoypadLeft(joypad: int) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isJoypadLeftStickButtonPressed(joypad: int) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isJoypadPressed(joypad: int, button: int) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isJoypadRBPressed(joypad: int) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isJoypadRTPressed(joypad: int) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isJoypadRight(joypad: int) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isJoypadRightStickButtonPressed(joypad: int) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isJoypadUp(joypad: int) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isKeyDown(key: int) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isKeyPressed(key: int) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isModActive(mod: ChooseGameInfo.Mod) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isMouseButtonDown(number: int) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isPublicServerListAllowed() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isServer() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isServerSoftReset() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isShiftKeyDown() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isShowConnectionInfo() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isShowPingInfo() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isShowServerInfo() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isSoundPlaying(sound: object) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isSteamOverlayEnabled() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isSteamRunningOnSteamDeck() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isSystemLinux() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isSystemMacOS() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isSystemWindows() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isValidSteamID(s: str) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isValidUserName(user: str) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isXBOXController() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def isoRegionsRenderer() -> IsoRegionsRenderer: ...
-
-# @LuaMethod
-@staticmethod
-def isoToScreenX(player: int, x: float, y: float, z: float) -> float: ...
-
-# @LuaMethod
-@staticmethod
-def isoToScreenY(player: int, x: float, y: float, z: float) -> float: ...
-
-# @LuaMethod
-@staticmethod
-def istype(obj: object, name: str) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def loadSkinnedZomboidModel(name: str, loc: str, tex: str) -> Model: ...
-
-# @LuaMethod
-@staticmethod
-def loadStaticZomboidModel(name: str, loc: str, tex: str) -> Model: ...
-
-# @LuaMethod
-@staticmethod
-def loadVehicleModel(name: str, loc: str, tex: str) -> Model: ...
-
-# @LuaMethod
-@staticmethod
-def loadZomboidModel(name: str, mesh: str, tex: str, shader: str, bStatic: bool) -> Model: ...
-
-# @LuaMethod
-@staticmethod
-def localVarName(c: Coroutine, n: int) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def luaDebug() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def manipulateSavefile(folder: str, action: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def moduleDotType(module: str, type: str) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def openUrl(url: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def pauseSoundAndMusic() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def ping(username: str, pwd: str, ip: str, port: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def playServerSound(sound: str, sq: IsoGridSquare) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def proceedFactionMessage(message: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def proceedPM(command: str) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def processAdminChatMessage(message: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def processGeneralMessage(message: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def processSafehouseMessage(message: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def processSayMessage(message: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def processShoutMessage(message: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def querySteamWorkshopItemDetails(itemIDs: ArrayList[str], functionObj: LuaClosure, arg1: object) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def queueCharEvent(eventChar: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def queueKeyEvent(lwjglKeyCode: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def rainConfig(cmd: str, arg: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def reactivateJoypadAfterResetLua() -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def reloadControllerConfigFiles() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def reloadEngineRPM() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def reloadLuaFile(filename: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def reloadModelsMatching(meshName: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def reloadServerLuaFile(filename: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def reloadSoundFiles() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def reloadVehicleTextures(scriptName: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def reloadVehicles() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def removeItemTransaction(item: InventoryItem, src: ItemContainer, dst: ItemContainer) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def removeTicket(ticketID: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def removeUserlog(user: str, type: str, text: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def renameSavefile(gameMode: str, oldName: str, newName: str) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def renderIsoCircle(x: float, y: float, z: float, radius: float, r: float, g: float, b: float, a: float, thickness: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def replaceWith(toReplace: str, regex: str, by: str) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def requestPacketCounts() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def requestTrading(you: IsoPlayer, other: IsoPlayer) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def requestUserlog(user: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def require(f: str) -> object: ...
-
-# @LuaMethod
-@staticmethod
-def resetRegionFile() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def resumeSoundAndMusic() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def revertToKeyboardAndMouse() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def sanitizeWorldName(worldName: str) -> str: ...
-
-# @LuaMethod
-@staticmethod
-def save(doCharacter: bool) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def saveControllerSettings(c: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def saveGame() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def saveModsFile() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def scoreboardUpdate() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def screenToIsoX(player: int, x: float, y: float, z: float) -> float: ...
-
-# @LuaMethod
-@staticmethod
-def screenToIsoY(player: int, x: float, y: float, z: float) -> float: ...
-
-# @LuaMethod
-@staticmethod
-def sendBandage(onlineID: int, i: int, bandaged: bool, bandageLife: float, isAlcoholic: bool, bandageType: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def sendCataplasm(onlineID: int, i: int, plantainFactor: float, comfreyFactor: float, garlicFactor: float) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def sendCleanBurn(wielder: IsoGameCharacter, target: IsoGameCharacter, bodyPart: BodyPart, bandage: InventoryItem) -> None: ...
-
-# @LuaMethod
-@staticmethod
 @overload
-def sendClientCommand(module: str, command: str, args: KahluaTable) -> None: ...
+def addZombiesInOutfit(var0, var1, var2, var3, var4, var5):
+  return LuaManager.GlobalObject.addZombiesInOutfit(var0, var1, var2, var3, var4, var5)
 
-# @LuaMethod
-@staticmethod
 @overload
-def sendClientCommand(player: IsoPlayer, module: str, command: str, args: KahluaTable) -> None: ...
+def addZombiesInOutfit(var0, var1, var2, var3, var4, var5, var6, var7, var8, var9, var10):
+  return LuaManager.GlobalObject.addZombiesInOutfit(var0, var1, var2, var3, var4, var5, var6, var7, var8, var9, var10)
 
-# @LuaMethod
-@staticmethod
-def sendClothing(player: IsoPlayer) -> None: ...
+def updateChatSettings(var0, var1, var2):
+  return LuaManager.GlobalObject.updateChatSettings(var0, var1, var2)
 
-# @LuaMethod
-@staticmethod
-def sendDisinfect(wielder: IsoGameCharacter, target: IsoGameCharacter, bodyPart: BodyPart, alcohol: InventoryItem) -> None: ...
+def setPuddles(var0):
+  return LuaManager.GlobalObject.setPuddles(var0)
 
-# @LuaMethod
-@staticmethod
-def sendFactionInvite(faction: Faction, host: IsoPlayer, invited: str) -> None: ...
+def setBehaviorStep(var0):
+  return LuaManager.GlobalObject.setBehaviorStep(var0)
 
-# @LuaMethod
-@staticmethod
-def sendItemListNet(sender: IsoPlayer, items: ArrayList[InventoryItem], receiver: IsoPlayer, transferID: str, custom: str) -> bool: ...
+def getZomboidRadio():
+  return LuaManager.GlobalObject.getZomboidRadio()
 
-# @LuaMethod
-@staticmethod
-def sendItemsInContainer(obj: IsoObject, container: ItemContainer) -> None: ...
+def instanceof(var0, var1):
+  return LuaManager.GlobalObject.instanceof(var0, var1)
 
-# @LuaMethod
-@staticmethod
-def sendPersonalColor(player: IsoPlayer) -> None: ...
+def serverConnectCoop(var0):
+  return LuaManager.GlobalObject.serverConnectCoop(var0)
 
-# @LuaMethod
-@staticmethod
-def sendPing() -> None: ...
+def backToSinglePlayer():
+  return LuaManager.GlobalObject.backToSinglePlayer()
 
-# @LuaMethod
-@staticmethod
-def sendPlayerExtraInfo(p: IsoPlayer) -> None: ...
+def isIngameState():
+  return LuaManager.GlobalObject.isIngameState()
 
-# @LuaMethod
-@staticmethod
-def sendPlayerStatsChange(player: IsoPlayer) -> None: ...
+def saveGame():
+  return LuaManager.GlobalObject.saveGame()
 
-# @LuaMethod
-@staticmethod
-def sendRemoveBullet(wielder: IsoGameCharacter, target: IsoGameCharacter, bodyPart: BodyPart) -> None: ...
+def tabToX(var0, var1):
+  return LuaManager.GlobalObject.tabToX(var0, var1)
 
-# @LuaMethod
-@staticmethod
-def sendRemoveGlass(wielder: IsoGameCharacter, target: IsoGameCharacter, bodyPart: BodyPart, handPain: bool) -> None: ...
+def loadVehicleModel(var0, var1, var2):
+  return LuaManager.GlobalObject.loadVehicleModel(var0, var1, var2)
 
-# @LuaMethod
-@staticmethod
-def sendRequestInventory(player: IsoPlayer) -> None: ...
+def getSLSoundManager():
+  return LuaManager.GlobalObject.getSLSoundManager()
 
-# @LuaMethod
-@staticmethod
-def sendSafehouseInvite(safehouse: SafeHouse, host: IsoPlayer, invited: str) -> None: ...
+def getRadioAPI():
+  return LuaManager.GlobalObject.getRadioAPI()
 
-# @LuaMethod
-@staticmethod
+def getLatestSave():
+  return LuaManager.GlobalObject.getLatestSave()
+
+def screenToIsoY(var0, var1, var2, var3):
+  return LuaManager.GlobalObject.screenToIsoY(var0, var1, var2, var3)
+
+def AddWorldSound(var0, var1, var2):
+  return LuaManager.GlobalObject.AddWorldSound(var0, var1, var2)
+
+def getLoadedLua(var0):
+  return LuaManager.GlobalObject.getLoadedLua(var0)
+
+def isServerSoftReset():
+  return LuaManager.GlobalObject.isServerSoftReset()
+
+def setActivePlayer(var0):
+  return LuaManager.GlobalObject.setActivePlayer(var0)
+
+def getOnlinePlayers():
+  return LuaManager.GlobalObject.getOnlinePlayers()
+
+def isoToScreenY(var0, var1, var2, var3):
+  return LuaManager.GlobalObject.isoToScreenY(var0, var1, var2, var3)
+
+def getPlayerScreenTop(var0):
+  return LuaManager.GlobalObject.getPlayerScreenTop(var0)
+
+def initUISystem():
+  return LuaManager.GlobalObject.initUISystem()
+
+def isDebugEnabled():
+  return LuaManager.GlobalObject.isDebugEnabled()
+
+def getSpecificPlayer(var0):
+  return LuaManager.GlobalObject.getSpecificPlayer(var0)
+
+def toggleBreakpoint(var0, var1):
+  return LuaManager.GlobalObject.toggleBreakpoint(var0, var1)
+
+def getCameraOffX():
+  return LuaManager.GlobalObject.getCameraOffX()
+
+def isoToScreenX(var0, var1, var2, var3):
+  return LuaManager.GlobalObject.isoToScreenX(var0, var1, var2, var3)
+
+def getLoadedLuaCount():
+  return LuaManager.GlobalObject.getLoadedLuaCount()
+
+def getPerformance():
+  return LuaManager.GlobalObject.getPerformance()
+
+def isDemo():
+  return LuaManager.GlobalObject.isDemo()
+
+def screenToIsoX(var0, var1, var2, var3):
+  return LuaManager.GlobalObject.screenToIsoX(var0, var1, var2, var3)
+
+def reloadLuaFile(var0):
+  return LuaManager.GlobalObject.reloadLuaFile(var0)
+
+def AddNoiseToken(var0, var1):
+  return LuaManager.GlobalObject.AddNoiseToken(var0, var1)
+
+def getSleepingEvent():
+  return LuaManager.GlobalObject.getSleepingEvent()
+
+def getFileSeparator():
+  return LuaManager.GlobalObject.getFileSeparator()
+
+def fileExists(var0):
+  return LuaManager.GlobalObject.fileExists(var0)
+
+def sledgeDestroy(var0):
+  return LuaManager.GlobalObject.sledgeDestroy(var0)
+
 @overload
-def sendServerCommand(module: str, command: str, args: KahluaTable) -> None: ...
+def takeScreenshot():
+  return LuaManager.GlobalObject.takeScreenshot()
 
-# @LuaMethod
-@staticmethod
 @overload
-def sendServerCommand(player: IsoPlayer, module: str, command: str, args: KahluaTable) -> None: ...
+def takeScreenshot(var0):
+  return LuaManager.GlobalObject.takeScreenshot(var0)
 
-# @LuaMethod
-@staticmethod
-def sendSplint(onlineID: int, i: int, doIt: bool, factor: float, splintItem: str) -> None: ...
+def doTutorial(var0):
+  return LuaManager.GlobalObject.doTutorial(var0)
 
-# @LuaMethod
-@staticmethod
-def sendStitch(wielder: IsoGameCharacter, target: IsoGameCharacter, bodyPart: BodyPart, item: InventoryItem, doIt: bool) -> None: ...
+def serverFileExists(var0):
+  return LuaManager.GlobalObject.serverFileExists(var0)
 
-# @LuaMethod
-@staticmethod
-def sendSwitchSeat(vehicle: BaseVehicle, chr: IsoGameCharacter, seatFrom: int, seatTo: int) -> None: ...
+def checkStringPattern(var0):
+  return LuaManager.GlobalObject.checkStringPattern(var0)
 
-# @LuaMethod
-@staticmethod
-def sendVisual(player: IsoPlayer) -> None: ...
+def getModInfoByID(var0):
+  return LuaManager.GlobalObject.getModInfoByID(var0)
 
-# @LuaMethod
-@staticmethod
-def serverConnect(arg0: str, arg1: str, arg2: str, arg3: str, arg4: str, arg5: str, arg6: str, arg7: bool) -> None: ...
+def cloneItemType(var0, var1):
+  return LuaManager.GlobalObject.cloneItemType(var0, var1)
 
-# @LuaMethod
-@staticmethod
-def serverConnectCoop(serverSteamID: str) -> None: ...
+def getCameraOffY():
+  return LuaManager.GlobalObject.getCameraOffY()
 
-# @LuaMethod
-@staticmethod
-def serverFileExists(filename: str) -> bool: ...
+def getServerList():
+  return LuaManager.GlobalObject.getServerList()
 
-# @LuaMethod
-@staticmethod
-def setActivePlayer(id: int) -> None: ...
+def createZombie(var0, var1, var2, var3, var4, var5):
+  return LuaManager.GlobalObject.createZombie(var0, var1, var2, var3, var4, var5)
 
-# @LuaMethod
-@staticmethod
-def setAdmin() -> None: ...
+def getModInfo(var0):
+  return LuaManager.GlobalObject.getModInfo(var0)
 
-# @LuaMethod
-@staticmethod
-def setAggroTarget(id: int, x: int, y: int) -> None: ...
+def doChallenge(var0):
+  return LuaManager.GlobalObject.doChallenge(var0)
 
-# @LuaMethod
-@staticmethod
-def setBehaviorStep(b: bool) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def setControllerDeadZone(c: int, axis: int, value: float) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def setDebugToggleControllerPluggedIn(index: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def setGameSpeed(NewSpeed: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def setModelMetaData(name: str, mesh: str, tex: str, shader: str, bStatic: bool) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def setMouseXY(x: int, y: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def setPlayerJoypad(player: int, joypad: int, playerObj: IsoPlayer, username: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def setPlayerMouse(playerObj: IsoPlayer) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def setPlayerMovementActive(id: int, bActive: bool) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def setProgressBarValue(player: IsoPlayer, value: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def setPuddles(initialPuddles: float) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def setSavefilePlayer1(gameMode: str, saveDir: str, sqlID: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def setServerStatisticEnable(enable: bool) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def setShowConnectionInfo(enabled: bool) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def setShowPausedMessage(b: bool) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def setShowPingInfo(enabled: bool) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def setShowServerInfo(enabled: bool) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def showAnimationViewer() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def showAttachmentEditor() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def showChunkDebugger() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def showFolderInDesktop(folder: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def showGlobalObjectDebugger() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def showSteamFloatingGamepadTextInput(multiLine: bool, x: int, y: int, width: int, height: int) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def showSteamGamepadTextInput(password: bool, multiLine: bool, description: str, maxChars: int, existingText: str) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def showVehicleEditor(scriptName: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def showWorldMapEditor(value: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def showWrongChatTabMessage(actualTabID: int, rightTabID: int, chatCommand: str) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def sledgeDestroy(object: IsoObject) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def spawnHorde(x: float, y: float, x2: float, y2: float, z: float, count: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def spawnpointsExistsForMod(modID: str, mapFolder: str) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def steamGetInternetServerDetails(index: int) -> Server: ...
-
-# @LuaMethod
-@staticmethod
-def steamGetInternetServersCount() -> int: ...
-
-# @LuaMethod
-@staticmethod
-def steamReleaseInternetServersRequest() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def steamRequestInternetServersList() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def steamRequestServerDetails(host: str, port: int) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def steamRequestServerRules(host: str, port: int) -> bool: ...
-
-# @LuaMethod
-@staticmethod
-def stopPing() -> None: ...
-
-# @LuaMethod
-@staticmethod
-def stopSound(sound: int) -> None: ...
-
-# @LuaMethod
-@staticmethod
-def tabToX(a: str, tabX: int) -> str: ...
-
-# @LuaMethod
-@staticmethod
 @overload
-def takeScreenshot() -> None: ...
+def instanceItem(var0):
+  return LuaManager.GlobalObject.instanceItem(var0)
 
-# @LuaMethod
-@staticmethod
 @overload
-def takeScreenshot(fileName: str) -> None: ...
+def instanceItem(var0):
+  return LuaManager.GlobalObject.instanceItem(var0)
 
-# @LuaMethod
-@staticmethod
-def testHelicopter() -> None: ...
+def createRegionFile():
+  return LuaManager.GlobalObject.createRegionFile()
 
-# @LuaMethod
-@staticmethod
-def testSound() -> None: ...
+def stopPing():
+  return LuaManager.GlobalObject.stopPing()
 
-# @LuaMethod
-@staticmethod
-def timSort(table: KahluaTable, functionObject: object) -> None: ...
+def getFileOutput(var0):
+  return LuaManager.GlobalObject.getFileOutput(var0)
 
-# @LuaMethod
-@staticmethod
-def toInt(val: float) -> int: ...
+def getControllerPovY(var0):
+  return LuaManager.GlobalObject.getControllerPovY(var0)
 
-# @LuaMethod
-@staticmethod
-def toggleBreakOnChange(table: KahluaTable, key: object) -> None: ...
+def getModFileReader(var0, var1, var2):
+  return LuaManager.GlobalObject.getModFileReader(var0, var1, var2)
 
-# @LuaMethod
-@staticmethod
-def toggleBreakOnRead(table: KahluaTable, key: object) -> None: ...
+def updateFire():
+  return LuaManager.GlobalObject.updateFire()
 
-# @LuaMethod
-@staticmethod
-def toggleBreakpoint(file: str, line: int) -> None: ...
+def isJoypadPressed(var0, var1):
+  return LuaManager.GlobalObject.isJoypadPressed(var0, var1)
 
-# @LuaMethod
-@staticmethod
-def toggleModActive(mod: ChooseGameInfo.Mod, active: bool) -> None: ...
+def getJoypadBButton(var0):
+  return LuaManager.GlobalObject.getJoypadBButton(var0)
 
-# @LuaMethod
-@staticmethod
-def toggleSafetyServer(player: IsoPlayer) -> None: ...
+def getJoypadAButton(var0):
+  return LuaManager.GlobalObject.getJoypadAButton(var0)
 
-# @LuaMethod
-@staticmethod
-def toggleVehicleRenderToTexture() -> None: ...
+def isJoypadLTPressed(var0):
+  return LuaManager.GlobalObject.isJoypadLTPressed(var0)
 
-# @LuaMethod
-@staticmethod
-def tradingUISendAddItem(you: IsoPlayer, other: IsoPlayer, i: InventoryItem) -> None: ...
+def getJoypadXButton(var0):
+  return LuaManager.GlobalObject.getJoypadXButton(var0)
 
-# @LuaMethod
-@staticmethod
-def tradingUISendRemoveItem(you: IsoPlayer, other: IsoPlayer, index: int) -> None: ...
+def getSandboxPresets():
+  return LuaManager.GlobalObject.getSandboxPresets()
 
-# @LuaMethod
-@staticmethod
-def tradingUISendUpdateState(you: IsoPlayer, other: IsoPlayer, state: int) -> None: ...
+def getModFileWriter(var0, var1, var2, var3):
+  return LuaManager.GlobalObject.getModFileWriter(var0, var1, var2, var3)
 
-# @LuaMethod
-@staticmethod
-def transformIntoKahluaTable(map: HashMap[object, object]) -> KahluaTable: ...
+def getFileReader(var0, var1):
+  return LuaManager.GlobalObject.getFileReader(var0, var1)
 
-# @LuaMethod
-@staticmethod
-def translatePointXInOverheadMapToWindow(x: float, ui: UIElement, zoom: float, xpos: float) -> float: ...
+def getControllerName(var0):
+  return LuaManager.GlobalObject.getControllerName(var0)
 
-# @LuaMethod
-@staticmethod
-def translatePointXInOverheadMapToWorld(x: float, ui: UIElement, zoom: float, xpos: float) -> float: ...
+def deletePlayerSave(var0):
+  return LuaManager.GlobalObject.deletePlayerSave(var0)
 
-# @LuaMethod
-@staticmethod
-def translatePointYInOverheadMapToWindow(y: float, ui: UIElement, zoom: float, ypos: float) -> float: ...
+def getControllerPovX(var0):
+  return LuaManager.GlobalObject.getControllerPovX(var0)
 
-# @LuaMethod
-@staticmethod
-def translatePointYInOverheadMapToWorld(y: float, ui: UIElement, zoom: float, ypos: float) -> float: ...
+def getGameTime():
+  return LuaManager.GlobalObject.getGameTime()
 
-# @LuaMethod
-@staticmethod
+def isJoypadDown(var0):
+  return LuaManager.GlobalObject.isJoypadDown(var0)
+
+def isJoypadRTPressed(var0):
+  return LuaManager.GlobalObject.isJoypadRTPressed(var0)
+
+def getMPStatus():
+  return LuaManager.GlobalObject.getMPStatus()
+
+def getControllerGUID(var0):
+  return LuaManager.GlobalObject.getControllerGUID(var0)
+
+def createStory(var0):
+  return LuaManager.GlobalObject.createStory(var0)
+
+def ZombRandBetween(var0, var2):
+  return LuaManager.GlobalObject.ZombRandBetween(var0, var2)
+
+def endTextFileInput():
+  return LuaManager.GlobalObject.endTextFileInput()
+
+def ZombRandFloat(var0, var1):
+  return LuaManager.GlobalObject.ZombRandFloat(var0, var1)
+
+def getGameFilesInput(var0):
+  return LuaManager.GlobalObject.getGameFilesInput(var0)
+
 @overload
-def triggerEvent(event: str) -> None: ...
+def ZombRand(var0):
+  return LuaManager.GlobalObject.ZombRand(var0)
 
-# @LuaMethod
-@staticmethod
 @overload
-def triggerEvent(event: str, param: object) -> None: ...
+def ZombRand(var0, var2):
+  return LuaManager.GlobalObject.ZombRand(var0, var2)
 
-# @LuaMethod
-@staticmethod
-@overload
-def triggerEvent(event: str, param: object, param2: object) -> None: ...
+def isJoypadRight(var0):
+  return LuaManager.GlobalObject.isJoypadRight(var0)
 
-# @LuaMethod
-@staticmethod
-@overload
-def triggerEvent(event: str, param: object, param2: object, param3: object) -> None: ...
+def isJoypadRBPressed(var0):
+  return LuaManager.GlobalObject.isJoypadRBPressed(var0)
 
-# @LuaMethod
-@staticmethod
-@overload
-def triggerEvent(event: str, param: object, param2: object, param3: object, param4: object) -> None: ...
+def endFileOutput():
+  return LuaManager.GlobalObject.endFileOutput()
 
-# @LuaMethod
-@staticmethod
-def updateChatSettings(fontSize: str, showTimestamp: bool, showTitle: bool) -> None: ...
+def setPlayerMouse(var0):
+  return LuaManager.GlobalObject.setPlayerMouse(var0)
 
-# @LuaMethod
-@staticmethod
-def updateFire() -> None: ...
+def isJoypadLeft(var0):
+  return LuaManager.GlobalObject.isJoypadLeft(var0)
 
-# @LuaMethod
-@staticmethod
-def useStaticErosionRand(use: bool) -> None: ...
+def isSoundPlaying(var0):
+  return LuaManager.GlobalObject.isSoundPlaying(var0)
 
-# @LuaMethod
-@staticmethod
-def useTextureFiltering(bUse: bool) -> None: ...
+def getFMODSoundBank():
+  return LuaManager.GlobalObject.getFMODSoundBank()
 
-# @LuaMethod
-@staticmethod
-def wasKeyDown(key: int) -> bool: ...
+def getFileWriter(var0, var1, var2):
+  return LuaManager.GlobalObject.getFileWriter(var0, var1, var2)
 
-# @LuaMethod
-@staticmethod
-def wasMouseActiveMoreRecentlyThanJoypad() -> bool: ...
+def getJoypadRBumper(var0):
+  return LuaManager.GlobalObject.getJoypadRBumper(var0)
 
-# @LuaMethod
-@staticmethod
-def writeLog(loggerName: str, logs: str) -> None: ...
+def getClientUsername():
+  return LuaManager.GlobalObject.getClientUsername()
 
-# @LuaMethod
-@staticmethod
-def zpopClearZombies(cellX: int, cellY: int) -> None: ...
+def setPlayerJoypad(var0, var1, var2, var3):
+  return LuaManager.GlobalObject.setPlayerJoypad(var0, var1, var2, var3)
 
-# @LuaMethod
-@staticmethod
-def zpopNewRenderer() -> ZombiePopulationRenderer: ...
+def getJoypadLBumper(var0):
+  return LuaManager.GlobalObject.getJoypadLBumper(var0)
 
-# @LuaMethod
-@staticmethod
-def zpopSpawnNow(cellX: int, cellY: int) -> None: ...
+def endFileInput():
+  return LuaManager.GlobalObject.endFileInput()
 
-# @LuaMethod
-@staticmethod
-def zpopSpawnTimeToZero(cellX: int, cellY: int) -> None: ...
+def getJoypadYButton(var0):
+  return LuaManager.GlobalObject.getJoypadYButton(var0)
+
+def isJoypadUp(var0):
+  return LuaManager.GlobalObject.isJoypadUp(var0)
+
+def isJoypadLBPressed(var0):
+  return LuaManager.GlobalObject.isJoypadLBPressed(var0)
+
+def getFileInput(var0):
+  return LuaManager.GlobalObject.getFileInput(var0)
+
+def forceChangeState(var0):
+  return LuaManager.GlobalObject.forceChangeState(var0)
+
+def getDebugOptions():
+  return LuaManager.GlobalObject.getDebugOptions()
+
+def manipulateSavefile(var0, var1):
+  return LuaManager.GlobalObject.manipulateSavefile(var0, var1)
+
+def getCore():
+  return LuaManager.GlobalObject.getCore()
+
+def getLocalVarCount(var0):
+  return LuaManager.GlobalObject.getLocalVarCount(var0)
+
+def localVarName(var0, var1):
+  return LuaManager.GlobalObject.localVarName(var0, var1)
+
+def getLocalVarStack(var0, var1):
+  return LuaManager.GlobalObject.getLocalVarStack(var0, var1)
+
+def isSystemLinux():
+  return LuaManager.GlobalObject.isSystemLinux()
+
+def createTile(var0, var1):
+  return LuaManager.GlobalObject.createTile(var0, var1)
+
+def getNumClassFields(var0):
+  return LuaManager.GlobalObject.getNumClassFields(var0)
+
+def toggleModActive(var0, var1):
+  return LuaManager.GlobalObject.toggleModActive(var0, var1)
+
+def isShiftKeyDown():
+  return LuaManager.GlobalObject.isShiftKeyDown()
+
+def getClassField(var0, var1):
+  return LuaManager.GlobalObject.getClassField(var0, var1)
+
+def getCoroutineTop(var0):
+  return LuaManager.GlobalObject.getCoroutineTop(var0)
+
+def getClassFunction(var0, var1):
+  return LuaManager.GlobalObject.getClassFunction(var0, var1)
+
+def isCtrlKeyDown():
+  return LuaManager.GlobalObject.isCtrlKeyDown()
+
+def openUrl(var0):
+  return LuaManager.GlobalObject.openUrl(var0)
+
+def getActivatedMods():
+  return LuaManager.GlobalObject.getActivatedMods()
+
+def getLocalVarName(var0, var1):
+  return LuaManager.GlobalObject.getLocalVarName(var0, var1)
+
+def isAltKeyDown():
+  return LuaManager.GlobalObject.isAltKeyDown()
+
+def addVirtualZombie(var0, var1):
+  return LuaManager.GlobalObject.addVirtualZombie(var0, var1)
+
+def getMouseXScaled():
+  return LuaManager.GlobalObject.getMouseXScaled()
+
+def drawOverheadMap(var0, var1, var2, var3):
+  return LuaManager.GlobalObject.drawOverheadMap(var0, var1, var2, var3)
+
+def luaDebug():
+  return LuaManager.GlobalObject.luaDebug()
+
+def getGameSpeed():
+  return LuaManager.GlobalObject.getGameSpeed()
+
+def getLastPlayedDate(var0):
+  return LuaManager.GlobalObject.getLastPlayedDate(var0)
+
+def isoRegionsRenderer():
+  return LuaManager.GlobalObject.isoRegionsRenderer()
+
+def zpopSpawnNow(var0, var1):
+  return LuaManager.GlobalObject.zpopSpawnNow(var0, var1)
+
+def assaultPlayer():
+  return LuaManager.GlobalObject.assaultPlayer()
+
+def getClassFieldVal(var0, var1):
+  return LuaManager.GlobalObject.getClassFieldVal(var0, var1)
+
+def setMouseXY(var0, var1):
+  return LuaManager.GlobalObject.setMouseXY(var0, var1)
+
+def zpopNewRenderer():
+  return LuaManager.GlobalObject.zpopNewRenderer()
+
+def getSaveInfo(var0):
+  return LuaManager.GlobalObject.getSaveInfo(var0)
+
+def getDirectionTo(var0, var1):
+  return LuaManager.GlobalObject.getDirectionTo(var0, var1)
+
+def isMouseButtonDown(var0):
+  return LuaManager.GlobalObject.isMouseButtonDown(var0)
+
+def getMouseX():
+  return LuaManager.GlobalObject.getMouseX()
+
+def setGameSpeed(var0):
+  return LuaManager.GlobalObject.setGameSpeed(var0)
+
+def getMouseYScaled():
+  return LuaManager.GlobalObject.getMouseYScaled()
+
+def zpopClearZombies(var0, var1):
+  return LuaManager.GlobalObject.zpopClearZombies(var0, var1)
+
+def getMouseY():
+  return LuaManager.GlobalObject.getMouseY()
+
+def getSoundManager():
+  return LuaManager.GlobalObject.getSoundManager()
+
+def getMethodParameter(var0, var1):
+  return LuaManager.GlobalObject.getMethodParameter(var0, var1)
+
+def isAdmin():
+  return LuaManager.GlobalObject.isAdmin()
+
+def getGameClient():
+  return LuaManager.GlobalObject.getGameClient()
+
+def renameSavefile(var0, var1, var2):
+  return LuaManager.GlobalObject.renameSavefile(var0, var1, var2)
+
+def getZombieInfo(var0):
+  return LuaManager.GlobalObject.getZombieInfo(var0)
+
+def isXBOXController():
+  return LuaManager.GlobalObject.isXBOXController()
+
+def getTextManager():
+  return LuaManager.GlobalObject.getTextManager()
+
+def getServerModData():
+  return LuaManager.GlobalObject.getServerModData()
+
+def setAdmin():
+  return LuaManager.GlobalObject.setAdmin()
+
+def doKeyPress(var0):
+  return LuaManager.GlobalObject.doKeyPress(var0)
+
+def toggleSafetyServer(var0):
+  return LuaManager.GlobalObject.toggleSafetyServer(var0)
+
+def getHourMinute():
+  return LuaManager.GlobalObject.getHourMinute()
+
+def getEvolvedRecipes():
+  return LuaManager.GlobalObject.getEvolvedRecipes()
+
+def setSavefilePlayer1(var0, var1, var2):
+  return LuaManager.GlobalObject.setSavefilePlayer1(var0, var1, var2)
+
+def getPlayerInfo(var0):
+  return LuaManager.GlobalObject.getPlayerInfo(var0)
+
+def getVehicleInfo(var0):
+  return LuaManager.GlobalObject.getVehicleInfo(var0)
+
+def getItemText(var0):
+  return LuaManager.GlobalObject.getItemText(var0)
+
+def getOnlineUsername():
+  return LuaManager.GlobalObject.getOnlineUsername()
+
+def getMapInfo(var0):
+  return LuaManager.GlobalObject.getMapInfo(var0)
+
+def debugSetRoomType(var0):
+  return LuaManager.GlobalObject.debugSetRoomType(var0)
+
+def inviteFriend(var0):
+  return LuaManager.GlobalObject.inviteFriend(var0)
+
+def getUrlInputStream(var0):
+  return LuaManager.GlobalObject.getUrlInputStream(var0)
+
+def getSteamScoreboard():
+  return LuaManager.GlobalObject.getSteamScoreboard()
+
+def renderIsoCircle(var0, var1, var2, var3, var4, var5, var6, var7, var8):
+  return LuaManager.GlobalObject.renderIsoCircle(var0, var1, var2, var3, var4, var5, var6, var7, var8)
+
+def configureLighting(var0):
+  return LuaManager.GlobalObject.configureLighting(var0)
+
+def is64bit():
+  return LuaManager.GlobalObject.is64bit()
+
+def testHelicopter():
+  return LuaManager.GlobalObject.testHelicopter()
+
+def forceSnowCheck():
+  return LuaManager.GlobalObject.forceSnowCheck()
+
+def getTimestampMs():
+  return LuaManager.GlobalObject.getTimestampMs()
+
+def getFriendsList():
+  return LuaManager.GlobalObject.getFriendsList()
+
+def getZones(var0, var1, var2):
+  return LuaManager.GlobalObject.getZones(var0, var1, var2)
+
+def canInviteFriends():
+  return LuaManager.GlobalObject.canInviteFriends()
+
+def testSound():
+  return LuaManager.GlobalObject.testSound()
+
+def reloadEngineRPM():
+  return LuaManager.GlobalObject.reloadEngineRPM()
+
+def processSayMessage(var0):
+  return LuaManager.GlobalObject.processSayMessage(var0)
+
+def getVehicleById(var0):
+  return LuaManager.GlobalObject.getVehicleById(var0)
+
+def addCarCrash():
+  return LuaManager.GlobalObject.addCarCrash()
+
+def proceedPM(var0):
+  return LuaManager.GlobalObject.proceedPM(var0)
+
+def getClimateMoon():
+  return LuaManager.GlobalObject.getClimateMoon()
+
+def endHelicopter():
+  return LuaManager.GlobalObject.endHelicopter()
+
+def reloadVehicles():
+  return LuaManager.GlobalObject.reloadVehicles()
+
+def rainConfig(var0, var1):
+  return LuaManager.GlobalObject.rainConfig(var0, var1)
+
+def addZombiesEating(var1, var2, var3, var4, var5):
+  return LuaManager.GlobalObject.addZombiesEating(var1, var2, var3, var4, var5)
+
+def reloadSoundFiles():
+  return LuaManager.GlobalObject.reloadSoundFiles()
+
+def queueCharEvent(var0):
+  return LuaManager.GlobalObject.queueCharEvent(var0)
+
+def queueKeyEvent(var0):
+  return LuaManager.GlobalObject.queueKeyEvent(var0)
+
+def addZombieSitting(var1, var2, var3):
+  return LuaManager.GlobalObject.addZombieSitting(var1, var2, var3)
+
+def getTileOverlays():
+  return LuaManager.GlobalObject.getTileOverlays()
+
+def screenZoomIn():
+  return LuaManager.GlobalObject.screenZoomIn()
+
+def timSort(var0, var1):
+  return LuaManager.GlobalObject.timSort(var0, var1)
+
+def getAllBeardStyles():
+  return LuaManager.GlobalObject.getAllBeardStyles()
+
+def getAllOutfits(var0):
+  return LuaManager.GlobalObject.getAllOutfits(var0)
+
+def getIsoMarkers():
+  return LuaManager.GlobalObject.getIsoMarkers()
+
+def getAllVehicles():
+  return LuaManager.GlobalObject.getAllVehicles()
+
+def screenZoomOut():
+  return LuaManager.GlobalObject.screenZoomOut()
+
+def getAverageFPS():
+  return LuaManager.GlobalObject.getAverageFPS()
+
+def getSearchMode():
+  return LuaManager.GlobalObject.getSearchMode()
+
+def checkServerName(var1):
+  return LuaManager.GlobalObject.checkServerName(var1)
+
+def getErosion():
+  return LuaManager.GlobalObject.getErosion()
+
+def getWorldMarkers():
+  return LuaManager.GlobalObject.getWorldMarkers()
+
+def Render3DItem(var1, var2, var3, var4, var5, var6):
+  return LuaManager.GlobalObject.Render3DItem(var1, var2, var3, var4, var5, var6)
+
+def getAllHairStyles(var0):
+  return LuaManager.GlobalObject.getAllHairStyles(var0)
+
+def SyncXp(var1):
+  return LuaManager.GlobalObject.SyncXp(var1)
+
+def getServerStatistic():
+  return LuaManager.GlobalObject.getServerStatistic()
+
+def isClient():
+  return LuaManager.GlobalObject.isClient()
+
+def createRandomDeadBody(var0, var1):
+  return LuaManager.GlobalObject.createRandomDeadBody(var0, var1)
+
+def setShowPingInfo(var0):
+  return LuaManager.GlobalObject.setShowPingInfo(var0)
+
+def isShowServerInfo():
+  return LuaManager.GlobalObject.isShowServerInfo()
+
+def isShowPingInfo():
+  return LuaManager.GlobalObject.isShowPingInfo()
+
+def setShowServerInfo(var0):
+  return LuaManager.GlobalObject.setShowServerInfo(var0)
+
+def getSpriteManager(var0):
+  return LuaManager.GlobalObject.getSpriteManager(var0)
+
+def getVehicleZoneAt(var0, var1, var2):
+  return LuaManager.GlobalObject.getVehicleZoneAt(var0, var1, var2)
+
+def getLotDirectories():
+  return LuaManager.GlobalObject.getLotDirectories()
+
+def getPuddlesManager():
+  return LuaManager.GlobalObject.getPuddlesManager()
+
+def getClimateManager():
+  return LuaManager.GlobalObject.getClimateManager()
+
+def getServerOptions():
+  return LuaManager.GlobalObject.getServerOptions()
+
+def getSandboxOptions():
+  return LuaManager.GlobalObject.getSandboxOptions()
+
+def getScriptManager():
+  return LuaManager.GlobalObject.getScriptManager()
+
+def breakpoint():
+  return LuaManager.GlobalObject.breakpoint()
+
+def toInt(var0):
+  return LuaManager.GlobalObject.toInt(var0)
+
+def getWorld():
+  return LuaManager.GlobalObject.getWorld()
+
+def reloadModelsMatching(var0):
+  return LuaManager.GlobalObject.reloadModelsMatching(var0)
+
+def showAnimationViewer():
+  return LuaManager.GlobalObject.showAnimationViewer()
+
+def debugFullyStreamedIn(var0, var1):
+  return LuaManager.GlobalObject.debugFullyStreamedIn(var0, var1)
+
+def showAttachmentEditor():
+  return LuaManager.GlobalObject.showAttachmentEditor()
+def showGlobalObjectDebugger():
+  return LuaManager.GlobalObject.showGlobalObjectDebugger()
+
+def setModelMetaData(var0, var1, var2, var3, var4):
+  return LuaManager.GlobalObject.setModelMetaData(var0, var1, var2, var3, var4)
+
+def getLastStandPlayersDirectory():
+  return LuaManager.GlobalObject.getLastStandPlayersDirectory()
+
+def getMapFoldersForMod(var0):
+  return LuaManager.GlobalObject.getMapFoldersForMod(var0)
+
+def getSteamWorkshopItemIDs():
+  return LuaManager.GlobalObject.getSteamWorkshopItemIDs()
+
+def getPlayerScreenWidth(var0):
+  return LuaManager.GlobalObject.getPlayerScreenWidth(var0)
+
+def getServerPasswordFromArgs():
+  return LuaManager.GlobalObject.getServerPasswordFromArgs()
+
+def spawnpointsExistsForMod(var0, var1):
+  return LuaManager.GlobalObject.spawnpointsExistsForMod(var0, var1)
+
+def getTranslatorCredits(var0):
+  return LuaManager.GlobalObject.getTranslatorCredits(var0)
+
+def getControllerAxisCount(var0):
+  return LuaManager.GlobalObject.getControllerAxisCount(var0)
+
+def getBehaviourDebugPlayer():
+  return LuaManager.GlobalObject.getBehaviourDebugPlayer()
+
+def hasDataReadBreakpoint(var0, var1):
+  return LuaManager.GlobalObject.hasDataReadBreakpoint(var0, var1)
+
+def isJoypadRightStickButtonPressed(var0):
+  return LuaManager.GlobalObject.isJoypadRightStickButtonPressed(var0)
+
+def getRadioTranslators(var0):
+  return LuaManager.GlobalObject.getRadioTranslators(var0)
+
+def getControllerDeadZone(var0, var1):
+  return LuaManager.GlobalObject.getControllerDeadZone(var0, var1)
+
+def getControllerAxisValue(var0, var1):
+  return LuaManager.GlobalObject.getControllerAxisValue(var0, var1)
+
+def getFullSaveDirectoryTable():
+  return LuaManager.GlobalObject.getFullSaveDirectoryTable()
+
+def getSaveDirectoryTable():
+  return LuaManager.GlobalObject.getSaveDirectoryTable()
+
+def isControllerConnected(var0):
+  return LuaManager.GlobalObject.isControllerConnected(var0)
+
+def reloadControllerConfigFiles():
+  return LuaManager.GlobalObject.reloadControllerConfigFiles()
+
+def getJoypadAimingAxisX(var0):
+  return LuaManager.GlobalObject.getJoypadAimingAxisX(var0)
+
+def getJoypadAimingAxisY(var0):
+  return LuaManager.GlobalObject.getJoypadAimingAxisY(var0)
+
+def getPlayerScreenHeight(var0):
+  return LuaManager.GlobalObject.getPlayerScreenHeight(var0)
+
+def checkSavePlayerExists():
+  return LuaManager.GlobalObject.checkSavePlayerExists()
+
+def loadStaticZomboidModel(var0, var1, var2):
+  return LuaManager.GlobalObject.loadStaticZomboidModel(var0, var1, var2)
+
+def createItemTransaction(var0, var1, var2):
+  return LuaManager.GlobalObject.createItemTransaction(var0, var1, var2)
+
+def transformIntoKahluaTable(var0):
+  return LuaManager.GlobalObject.transformIntoKahluaTable(var0)
+
+def checkSaveFolderExists(var0):
+  return LuaManager.GlobalObject.checkSaveFolderExists(var0)
+
+def getModDirectoryTable():
+  return LuaManager.GlobalObject.getModDirectoryTable()
+
+def createNewScriptItem(var0, var1, var2, var3, var4):
+  return LuaManager.GlobalObject.createNewScriptItem(var0, var1, var2, var3, var4)
+
+def getLastStandPlayerFileNames():
+  return LuaManager.GlobalObject.getLastStandPlayerFileNames()
+
+def getJoypadMovementAxisX(var0):
+  return LuaManager.GlobalObject.getJoypadMovementAxisX(var0)
+
+def getPlayerScreenLeft(var0):
+  return LuaManager.GlobalObject.getPlayerScreenLeft(var0)
+
+def getNumActivePlayers():
+  return LuaManager.GlobalObject.getNumActivePlayers()
+
+def removeItemTransaction(var0, var1, var2):
+  return LuaManager.GlobalObject.removeItemTransaction(var0, var1, var2)
+
+def setPlayerMovementActive(var0, var1):
+  return LuaManager.GlobalObject.setPlayerMovementActive(var0, var1)
+
+def getMapDirectoryTable():
+  return LuaManager.GlobalObject.getMapDirectoryTable()
+
+def getWorldSoundManager():
+  return LuaManager.GlobalObject.getWorldSoundManager()
+
+def getMaxActivePlayers():
+  return LuaManager.GlobalObject.getMaxActivePlayers()
+
+def isCurrentExecutionPoint(var0, var1):
+  return LuaManager.GlobalObject.isCurrentExecutionPoint(var0, var1)
+
+def getAmbientStreamManager():
+  return LuaManager.GlobalObject.getAmbientStreamManager()
+
+def reloadServerLuaFile(var0):
+  return LuaManager.GlobalObject.reloadServerLuaFile(var0)
+
+def getServerAddressFromArgs():
+  return LuaManager.GlobalObject.getServerAddressFromArgs()
+
+def connectionManagerLog(var0, var1):
+  return LuaManager.GlobalObject.connectionManagerLog(var0, var1)
+
+def deleteSandboxPreset(var0):
+  return LuaManager.GlobalObject.deleteSandboxPreset(var0)
+
+def deleteAllGameModeSaves(var0):
+  return LuaManager.GlobalObject.deleteAllGameModeSaves(var0)
+
+def loadSkinnedZomboidModel(var0, var1, var2):
+  return LuaManager.GlobalObject.loadSkinnedZomboidModel(var0, var1, var2)
+
+def getAbsoluteSaveFolderName(var0):
+  return LuaManager.GlobalObject.getAbsoluteSaveFolderName(var0)
+
+def checkSaveFileExists(var0):
+  return LuaManager.GlobalObject.checkSaveFileExists(var0)
+
+def setControllerDeadZone(var0, var1, var2):
+  return LuaManager.GlobalObject.setControllerDeadZone(var0, var1, var2)
+
+def getControllerButtonCount(var0):
+  return LuaManager.GlobalObject.getControllerButtonCount(var0)
+
+def isJoypadLeftStickButtonPressed(var0):
+  return LuaManager.GlobalObject.isJoypadLeftStickButtonPressed(var0)
+
+def getSteamAvatarFromUsername(var0):
+  return LuaManager.GlobalObject.getSteamAvatarFromUsername(var0)
+
+def activateSteamOverlayToWebPage(var0):
+  return LuaManager.GlobalObject.activateSteamOverlayToWebPage(var0)
+
+def getSteamWorkshopStagedItems():
+  return LuaManager.GlobalObject.getSteamWorkshopStagedItems()
+
+def isSteamRunningOnSteamDeck():
+  return LuaManager.GlobalObject.isSteamRunningOnSteamDeck()
+
+def showSteamGamepadTextInput(var0, var1, var2, var3, var4):
+  return LuaManager.GlobalObject.showSteamGamepadTextInput(var0, var1, var2, var3, var4)
+
+def getCoroutineObjStackWithBase(var0, var1):
+  return LuaManager.GlobalObject.getCoroutineObjStackWithBase(var0, var1)
+
+def useTextureFiltering(var0):
+  return LuaManager.GlobalObject.useTextureFiltering(var0)
+
+def showSteamFloatingGamepadTextInput(var0, var1, var2, var3, var4):
+  return LuaManager.GlobalObject.showSteamFloatingGamepadTextInput(var0, var1, var2, var3, var4)
+
+def sendPlayerStatsChange(var0):
+  return LuaManager.GlobalObject.sendPlayerStatsChange(var0)
+
+def querySteamWorkshopItemDetails(var0, var1, var2):
+  return LuaManager.GlobalObject.querySteamWorkshopItemDetails(var0, var1, var2)
+
+def connectToServerStateCallback(var0):
+  return LuaManager.GlobalObject.connectToServerStateCallback(var0)
+
+def getNumClassFunctions(var0):
+  return LuaManager.GlobalObject.getNumClassFunctions(var0)
+
+def getSteamWorkshopItemMods(var0):
+  return LuaManager.GlobalObject.getSteamWorkshopItemMods(var0)
+
+def getPublicServersList():
+  return LuaManager.GlobalObject.getPublicServersList()
+
+def getJoypadMovementAxisY(var0):
+  return LuaManager.GlobalObject.getJoypadMovementAxisY(var0)
+
+def getLuaDebuggerErrors():
+  return LuaManager.GlobalObject.getLuaDebuggerErrors()
+
+def getFirstLineOfClosure(var0):
+  return LuaManager.GlobalObject.getFirstLineOfClosure(var0)
+
+def isDesktopOpenSupported():
+  return LuaManager.GlobalObject.isDesktopOpenSupported()
+
+def getTextureFromSaveDir(var0, var1):
+  return LuaManager.GlobalObject.getTextureFromSaveDir(var0, var1)
+
+def getJoypadRightStickButton(var0):
+  return LuaManager.GlobalObject.getJoypadRightStickButton(var0)
+
+def activateJoypadOnSteamDeck():
+  return LuaManager.GlobalObject.activateJoypadOnSteamDeck()
+
+def getFilenameOfCallframe(var0):
+  return LuaManager.GlobalObject.getFilenameOfCallframe(var0)
+
+def showFolderInDesktop(var0):
+  return LuaManager.GlobalObject.showFolderInDesktop(var0)
+
+def getJoypadBackButton(var0):
+  return LuaManager.GlobalObject.getJoypadBackButton(var0)
+
+def getCoroutineCallframeStack(var0, var1):
+  return LuaManager.GlobalObject.getCoroutineCallframeStack(var0, var1)
+
+def getServerSavedWorldVersion(var0):
+  return LuaManager.GlobalObject.getServerSavedWorldVersion(var0)
+
+def getGametimeTimestamp():
+  return LuaManager.GlobalObject.getGametimeTimestamp()
+
+def activateSteamOverlayToWorkshopItem(var0):
+  return LuaManager.GlobalObject.activateSteamOverlayToWorkshopItem(var0)
+
+def activateSteamOverlayToWorkshopUser():
+  return LuaManager.GlobalObject.activateSteamOverlayToWorkshopUser()
+
+def reactivateJoypadAfterResetLua():
+  return LuaManager.GlobalObject.reactivateJoypadAfterResetLua()
+
+def getCurrentUserProfileName():
+  return LuaManager.GlobalObject.getCurrentUserProfileName()
+
+def getJoypadStartButton(var0):
+  return LuaManager.GlobalObject.getJoypadStartButton(var0)
+
+def getCoroutineObjStack(var0, var1):
+  return LuaManager.GlobalObject.getCoroutineObjStack(var0, var1)
+
+def getSandboxFileWriter(var0, var1, var2):
+  return LuaManager.GlobalObject.getSandboxFileWriter(var0, var1, var2)
+
+def getLuaDebuggerErrorCount():
+  return LuaManager.GlobalObject.getLuaDebuggerErrorCount()
+
+def getGameFilesTextInput(var0):
+  return LuaManager.GlobalObject.getGameFilesTextInput(var0)
+
+def isSteamOverlayEnabled():
+  return LuaManager.GlobalObject.isSteamOverlayEnabled()
+
+def activateSteamOverlayToWorkshop():
+  return LuaManager.GlobalObject.activateSteamOverlayToWorkshop()
+
+def getMethodParameterCount(var0):
+  return LuaManager.GlobalObject.getMethodParameterCount(var0)
+
+def getCurrentUserSteamID():
+  return LuaManager.GlobalObject.getCurrentUserSteamID()
+
+def getJoypadLeftStickButton(var0):
+  return LuaManager.GlobalObject.getJoypadLeftStickButton(var0)
+
+def setProgressBarValue(var0, var1):
+  return LuaManager.GlobalObject.setProgressBarValue(var0, var1)
+
+def getRecipeDisplayName(var0):
+  return LuaManager.GlobalObject.getRecipeDisplayName(var0)
+
+def getFilenameOfClosure(var0):
+  return LuaManager.GlobalObject.getFilenameOfClosure(var0)
+
+def zpopSpawnTimeToZero(var0, var1):
+  return LuaManager.GlobalObject.zpopSpawnTimeToZero(var0, var1)
+
+def canModifyPlayerScoreboard():
+  return LuaManager.GlobalObject.canModifyPlayerScoreboard()
+
+def getSteamProfileNameFromSteamID(var0):
+  return LuaManager.GlobalObject.getSteamProfileNameFromSteamID(var0)
+
+def getShortenedFilename(var0):
+  return LuaManager.GlobalObject.getShortenedFilename(var0)
+
+def doLuaDebuggerAction(var0):
+  return LuaManager.GlobalObject.doLuaDebuggerAction(var0)
+
+def getSteamAvatarFromSteamID(var0):
+  return LuaManager.GlobalObject.getSteamAvatarFromSteamID(var0)
+
+def getSteamIDFromUsername(var0):
+  return LuaManager.GlobalObject.getSteamIDFromUsername(var0)
+
+def getSteamProfileNameFromUsername(var0):
+  return LuaManager.GlobalObject.getSteamProfileNameFromUsername(var0)
+
+def isItemTransactionConsistent(var0, var1, var2):
+  return LuaManager.GlobalObject.isItemTransactionConsistent(var0, var1, var2)
+
+def proceedFactionMessage(var0):
+  return LuaManager.GlobalObject.proceedFactionMessage(var0)
+
+def addZombiesInBuilding(var1, var2, var3, var4, var5):
+  return LuaManager.GlobalObject.addZombiesInBuilding(var1, var2, var3, var4, var5)
+
+def processAdminChatMessage(var0):
+  return LuaManager.GlobalObject.processAdminChatMessage(var0)
+
+def addAllSmashedVehicles():
+  return LuaManager.GlobalObject.addAllSmashedVehicles()
+
+def steamReleaseInternetServersRequest():
+  return LuaManager.GlobalObject.steamReleaseInternetServersRequest()
+
+def getAllItemsForBodyLocation(var0):
+  return LuaManager.GlobalObject.getAllItemsForBodyLocation(var0)
+
+def toggleVehicleRenderToTexture():
+  return LuaManager.GlobalObject.toggleVehicleRenderToTexture()
+
+def checkPlayerCanUseChat(var0):
+  return LuaManager.GlobalObject.checkPlayerCanUseChat(var0)
+
+def getEditVehicleState():
+  return LuaManager.GlobalObject.getEditVehicleState()
+
+def addAllBurntVehicles():
+  return LuaManager.GlobalObject.addAllBurntVehicles()
+
+def processGeneralMessage(var0):
+  return LuaManager.GlobalObject.processGeneralMessage(var0)
+
+def attachTrailerToPlayerVehicle(var0):
+  return LuaManager.GlobalObject.attachTrailerToPlayerVehicle(var0)
+
+def getAttachmentEditorState():
+  return LuaManager.GlobalObject.getAttachmentEditorState()
+
+def processSafehouseMessage(var0):
+  return LuaManager.GlobalObject.processSafehouseMessage(var0)
+
+def showWrongChatTabMessage(var0, var1, var2):
+  return LuaManager.GlobalObject.showWrongChatTabMessage(var0, var1, var2)
+
+def useStaticErosionRand(var0):
+  return LuaManager.GlobalObject.useStaticErosionRand(var0)
+
+def getBeardStylesInstance():
+  return LuaManager.GlobalObject.getBeardStylesInstance()
+
+def steamRequestServerRules(var0, var1):
+  return LuaManager.GlobalObject.steamRequestServerRules(var0, var1)
+
+def steamRequestInternetServersList():
+  return LuaManager.GlobalObject.steamRequestInternetServersList()
+
+def isPublicServerListAllowed():
+  return LuaManager.GlobalObject.isPublicServerListAllowed()
+
+def steamGetInternetServersCount():
+  return LuaManager.GlobalObject.steamGetInternetServersCount()
+
+def getAnimationViewerState():
+  return LuaManager.GlobalObject.getAnimationViewerState()
+
+def checkModsNeedUpdate(var0):
+  return LuaManager.GlobalObject.checkModsNeedUpdate(var0)
+
+def addZombiesInOutfitArea(var1, var2, var3, var4, var5, var6, var7, var8):
+  return LuaManager.GlobalObject.addZombiesInOutfitArea(var1, var2, var3, var4, var5, var6, var7, var8)
+
+def steamGetInternetServerDetails(var0):
+  return LuaManager.GlobalObject.steamGetInternetServerDetails(var0)
+
+def reloadVehicleTextures(var0):
+  return LuaManager.GlobalObject.reloadVehicleTextures(var0)
+
+def getAllDecalNamesForItem(var0):
+  return LuaManager.GlobalObject.getAllDecalNamesForItem(var0)
+
+def getContainerOverlays():
+  return LuaManager.GlobalObject.getContainerOverlays()
+
+def steamRequestServerDetails(var0, var1):
+  return LuaManager.GlobalObject.steamRequestServerDetails(var0, var1)
+
+def getServerSettingsManager():
+  return LuaManager.GlobalObject.getServerSettingsManager()
+
+def processShoutMessage(var0):
+  return LuaManager.GlobalObject.processShoutMessage(var0)
+
+def getHairStylesInstance():
+  return LuaManager.GlobalObject.getHairStylesInstance()
+
+def isShowConnectionInfo():
+  return LuaManager.GlobalObject.isShowConnectionInfo()
+
+def setShowConnectionInfo(var0):
+  return LuaManager.GlobalObject.setShowConnectionInfo(var0)
+
+def wasMouseActiveMoreRecentlyThanJoypad():
+  return LuaManager.GlobalObject.wasMouseActiveMoreRecentlyThanJoypad()
+
+def translatePointXInOverheadMapToWindow(var0, var1, var2, var3):
+  return LuaManager.GlobalObject.translatePointXInOverheadMapToWindow(var0, var1, var2, var3)
+
+def translatePointYInOverheadMapToWindow(var0, var1, var2, var3):
+  return LuaManager.GlobalObject.translatePointYInOverheadMapToWindow(var0, var1, var2, var3)
+
+def translatePointXInOverheadMapToWorld(var0, var1, var2, var3):
+  return LuaManager.GlobalObject.translatePointXInOverheadMapToWorld(var0, var1, var2, var3)
+
+def translatePointYInOverheadMapToWorld(var0, var1, var2, var3):
+  return LuaManager.GlobalObject.translatePointYInOverheadMapToWorld(var0, var1, var2, var3)
+
+def getRenderer():
+  return LuaManager.GlobalObject.getRenderer()
+
+def showWorldMapEditor(var0):
+  return LuaManager.GlobalObject.showWorldMapEditor(var0)
+
+def showChunkDebugger():
+  return LuaManager.GlobalObject.showChunkDebugger()
+
+def showVehicleEditor(var0):
+  return LuaManager.GlobalObject.showVehicleEditor(var0)
 
 Events: Any
