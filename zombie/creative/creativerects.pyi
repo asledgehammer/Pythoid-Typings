@@ -1,0 +1,23 @@
+from typing import Any, overload, TypeVar
+from java.lang.annotation import Annotation
+
+class OpenSimplexNoise:
+
+  @overload
+  def eval(self, x: float, y: float) -> float: ...
+
+  @overload
+  def eval(self, x: float, y: float, z: float) -> float: ...
+
+  @overload
+  def eval(self, x: float, y: float, z: float, w: float) -> float: ...
+
+  def evalOct(self, v: float, v1: float, i: int) -> float: ...
+
+  @overload
+  def __init__(self): ...
+  @overload
+  def __init__(self, perm: list[int]): ...
+  @overload
+  def __init__(self, seed: int): ...
+

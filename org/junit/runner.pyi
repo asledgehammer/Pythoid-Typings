@@ -1,0 +1,79 @@
+from typing import Any, overload, TypeVar
+from java.lang.annotation import Annotation
+from java.io import Serializable
+from java.lang import Class
+from java.lang.annotation import Annotation
+from java.util import Collection, ArrayList
+
+T = TypeVar('T', default=Any)
+
+class Description:
+
+  EMPTY: Description
+
+  TEST_MECHANISM: Description
+
+  def addChild(self, arg0: Description) -> None: ...
+
+  def childlessCopy(self) -> Description: ...
+
+  def equals(self, arg0: object) -> bool: ...
+
+  def getAnnotation(self, arg0: Class[T]) -> T: ...
+
+  def getAnnotations(self) -> Collection[Annotation]: ...
+
+  def getChildren(self) -> ArrayList[Description]: ...
+
+  def getClassName(self) -> str: ...
+
+  def getDisplayName(self) -> str: ...
+
+  def getMethodName(self) -> str: ...
+
+  def getTestClass(self) -> Class[Any]: ...
+
+  def hashCode(self) -> int: ...
+
+  def isEmpty(self) -> bool: ...
+
+  def isSuite(self) -> bool: ...
+
+  def isTest(self) -> bool: ...
+
+  def testCount(self) -> int: ...
+
+  def toString(self) -> str: ...
+
+  @staticmethod
+  @overload
+  def createSuiteDescription(arg0: Class[Any]) -> Description: ...
+
+  @staticmethod
+  @overload
+  def createSuiteDescription(arg0: Class[Any], arg1: list[Annotation]) -> Description: ...
+
+  @staticmethod
+  @overload
+  def createSuiteDescription(arg0: str, arg1: list[Annotation]) -> Description: ...
+
+  @staticmethod
+  @overload
+  def createSuiteDescription(arg0: str, arg1: Serializable, arg2: list[Annotation]) -> Description: ...
+
+  @staticmethod
+  @overload
+  def createTestDescription(arg0: Class[Any], arg1: str) -> Description: ...
+
+  @staticmethod
+  @overload
+  def createTestDescription(arg0: Class[Any], arg1: str, arg2: list[Annotation]) -> Description: ...
+
+  @staticmethod
+  @overload
+  def createTestDescription(arg0: str, arg1: str, arg2: list[Annotation]) -> Description: ...
+
+  @staticmethod
+  @overload
+  def createTestDescription(arg0: str, arg1: str, arg2: Serializable) -> Description: ...
+

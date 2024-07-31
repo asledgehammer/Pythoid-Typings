@@ -1,0 +1,29 @@
+from typing import Any, overload, TypeVar
+from java.lang.annotation import Annotation
+from javax.activation import DataHandler
+
+class AttachmentMarshaller:
+
+  @overload
+  def addMtomAttachment(self, arg0: DataHandler, arg1: str, arg2: str) -> str: ...
+
+  @overload
+  def addMtomAttachment(self, arg0: list[int], arg1: int, arg2: int, arg3: str, arg4: str, arg5: str) -> str: ...
+
+  def addSwaRefAttachment(self, arg0: DataHandler) -> str: ...
+
+  def isXOPPackage(self) -> bool: ...
+
+  def __init__(self): ...
+
+
+class AttachmentUnmarshaller:
+
+  def getAttachmentAsByteArray(self, arg0: str) -> list[int]: ...
+
+  def getAttachmentAsDataHandler(self, arg0: str) -> DataHandler: ...
+
+  def isXOPPackage(self) -> bool: ...
+
+  def __init__(self): ...
+

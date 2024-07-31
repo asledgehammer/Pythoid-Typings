@@ -1,0 +1,316 @@
+from typing import Any, overload, TypeVar
+from java.lang.annotation import Annotation
+from java.awt import Rectangle, GraphicsConfiguration, GraphicsDevice, Component, ImageCapabilities, Image
+from java.awt.geom import AffineTransform
+from java.awt.image import Raster, BufferedImage, ColorModel, IndexColorModel, DataBuffer, ImageConsumer
+from java.util import Hashtable
+from sun.java2d import SurfaceData, SunGraphics2D
+from sun.java2d.loops import RenderLoops, SurfaceType
+
+class BufImgSurfaceData(SurfaceData):
+
+  def getBounds(self) -> Rectangle: ...
+
+  def getDefaultScaleX(self) -> float: ...
+
+  def getDefaultScaleY(self) -> float: ...
+
+  def getDestination(self) -> object: ...
+
+  def getDeviceConfiguration(self) -> GraphicsConfiguration: ...
+
+  def getRaster(self, arg0: int, arg1: int, arg2: int, arg3: int) -> Raster: ...
+
+  def getRenderLoops(self, arg0: SunGraphics2D) -> RenderLoops: ...
+
+  def getReplacement(self) -> SurfaceData: ...
+
+  def initSolidLoops(self) -> None: ...
+
+  @staticmethod
+  @overload
+  def createData(arg0: BufferedImage) -> SurfaceData: ...
+
+  @staticmethod
+  @overload
+  def createData(arg0: Raster, arg1: ColorModel) -> SurfaceData: ...
+
+  @staticmethod
+  @overload
+  def createData(arg0: BufferedImage, arg1: float, arg2: float) -> SurfaceData: ...
+
+  @staticmethod
+  def createDataBC(arg0: BufferedImage, arg1: SurfaceType, arg2: int, arg3: float, arg4: float) -> SurfaceData: ...
+
+  @staticmethod
+  def createDataBP(arg0: BufferedImage, arg1: SurfaceType, arg2: float, arg3: float) -> SurfaceData: ...
+
+  @staticmethod
+  def createDataIC(arg0: BufferedImage, arg1: SurfaceType, arg2: float, arg3: float) -> SurfaceData: ...
+
+  @staticmethod
+  def createDataSC(arg0: BufferedImage, arg1: SurfaceType, arg2: IndexColorModel, arg3: float, arg4: float) -> SurfaceData: ...
+
+  @staticmethod
+  def getSolidLoops(arg0: SurfaceType) -> RenderLoops: ...
+
+  def __init__(self, arg0: DataBuffer, arg1: BufferedImage, arg2: SurfaceType, arg3: float, arg4: float): ...
+
+  class ICMColorData: ...
+
+
+class BufferedImageGraphicsConfig(GraphicsConfiguration):
+
+  def createCompatibleImage(self, arg0: int, arg1: int) -> BufferedImage: ...
+
+  def getBounds(self) -> Rectangle: ...
+
+  @overload
+  def getColorModel(self) -> ColorModel: ...
+
+  @overload
+  def getColorModel(self, arg0: int) -> ColorModel: ...
+
+  def getDefaultTransform(self) -> AffineTransform: ...
+
+  def getDevice(self) -> GraphicsDevice: ...
+
+  def getNormalizingTransform(self) -> AffineTransform: ...
+
+  @staticmethod
+  @overload
+  def getConfig(arg0: BufferedImage) -> BufferedImageGraphicsConfig: ...
+
+  @staticmethod
+  @overload
+  def getConfig(arg0: BufferedImage, arg1: float, arg2: float) -> BufferedImageGraphicsConfig: ...
+
+  def __init__(self, arg0: BufferedImage, arg1: Component, arg2: float, arg3: float): ...
+
+
+class OffScreenImageSource:
+
+  @overload
+  def addConsumer(self, arg0: ImageConsumer) -> None: ...
+
+  @overload
+  def addConsumer(self, arg0: ImageConsumer) -> None: ...
+
+  @overload
+  def isConsumer(self, arg0: ImageConsumer) -> bool: ...
+
+  @overload
+  def isConsumer(self, arg0: ImageConsumer) -> bool: ...
+
+  @overload
+  def removeConsumer(self, arg0: ImageConsumer) -> None: ...
+
+  @overload
+  def removeConsumer(self, arg0: ImageConsumer) -> None: ...
+
+  @overload
+  def requestTopDownLeftRightResend(self, arg0: ImageConsumer) -> None: ...
+
+  @overload
+  def requestTopDownLeftRightResend(self, arg0: ImageConsumer) -> None: ...
+
+  @overload
+  def startProduction(self, arg0: ImageConsumer) -> None: ...
+
+  @overload
+  def startProduction(self, arg0: ImageConsumer) -> None: ...
+
+  @overload
+  def __init__(self, arg0: BufferedImage): ...
+  @overload
+  def __init__(self, arg0: BufferedImage, arg1: Hashtable[Any, Any]): ...
+
+
+class PixelConverter:
+
+  instance: PixelConverter
+
+  def getAlphaMask(self) -> int: ...
+
+  def pixelToRgb(self, arg0: int, arg1: ColorModel) -> int: ...
+
+  def rgbToPixel(self, arg0: int, arg1: ColorModel) -> int: ...
+
+  class UshortGray(PixelConverter.ByteGray):
+
+    instance: PixelConverter
+
+    def pixelToRgb(self, arg0: int, arg1: ColorModel) -> int: ...
+
+    def rgbToPixel(self, arg0: int, arg1: ColorModel) -> int: ...
+
+  class ByteGray(PixelConverter):
+
+    instance: PixelConverter
+
+    def pixelToRgb(self, arg0: int, arg1: ColorModel) -> int: ...
+
+    def rgbToPixel(self, arg0: int, arg1: ColorModel) -> int: ...
+
+  class ArgbBm(PixelConverter):
+
+    instance: PixelConverter
+
+    def pixelToRgb(self, arg0: int, arg1: ColorModel) -> int: ...
+
+    def rgbToPixel(self, arg0: int, arg1: ColorModel) -> int: ...
+
+  class ArgbPre(PixelConverter):
+
+    instance: PixelConverter
+
+    def pixelToRgb(self, arg0: int, arg1: ColorModel) -> int: ...
+
+    def rgbToPixel(self, arg0: int, arg1: ColorModel) -> int: ...
+
+  class RgbaPre(PixelConverter):
+
+    instance: PixelConverter
+
+    def pixelToRgb(self, arg0: int, arg1: ColorModel) -> int: ...
+
+    def rgbToPixel(self, arg0: int, arg1: ColorModel) -> int: ...
+
+  class Rgba(PixelConverter):
+
+    instance: PixelConverter
+
+    def pixelToRgb(self, arg0: int, arg1: ColorModel) -> int: ...
+
+    def rgbToPixel(self, arg0: int, arg1: ColorModel) -> int: ...
+
+  class Bgrx(PixelConverter):
+
+    instance: PixelConverter
+
+    def pixelToRgb(self, arg0: int, arg1: ColorModel) -> int: ...
+
+    def rgbToPixel(self, arg0: int, arg1: ColorModel) -> int: ...
+
+  class Xbgr(PixelConverter):
+
+    instance: PixelConverter
+
+    def pixelToRgb(self, arg0: int, arg1: ColorModel) -> int: ...
+
+    def rgbToPixel(self, arg0: int, arg1: ColorModel) -> int: ...
+
+  class Ushort4444Argb(PixelConverter):
+
+    instance: PixelConverter
+
+    def pixelToRgb(self, arg0: int, arg1: ColorModel) -> int: ...
+
+    def rgbToPixel(self, arg0: int, arg1: ColorModel) -> int: ...
+
+  class Ushort555Rgb(PixelConverter):
+
+    instance: PixelConverter
+
+    def pixelToRgb(self, arg0: int, arg1: ColorModel) -> int: ...
+
+    def rgbToPixel(self, arg0: int, arg1: ColorModel) -> int: ...
+
+  class Ushort555Rgbx(PixelConverter):
+
+    instance: PixelConverter
+
+    def pixelToRgb(self, arg0: int, arg1: ColorModel) -> int: ...
+
+    def rgbToPixel(self, arg0: int, arg1: ColorModel) -> int: ...
+
+  class Ushort565Rgb(PixelConverter):
+
+    instance: PixelConverter
+
+    def pixelToRgb(self, arg0: int, arg1: ColorModel) -> int: ...
+
+    def rgbToPixel(self, arg0: int, arg1: ColorModel) -> int: ...
+
+  class Argb(PixelConverter):
+
+    instance: PixelConverter
+
+    def pixelToRgb(self, arg0: int, arg1: ColorModel) -> int: ...
+
+    def rgbToPixel(self, arg0: int, arg1: ColorModel) -> int: ...
+
+  class Xrgb(PixelConverter):
+
+    instance: PixelConverter
+
+    def pixelToRgb(self, arg0: int, arg1: ColorModel) -> int: ...
+
+    def rgbToPixel(self, arg0: int, arg1: ColorModel) -> int: ...
+
+  class Rgbx(PixelConverter):
+
+    instance: PixelConverter
+
+    def pixelToRgb(self, arg0: int, arg1: ColorModel) -> int: ...
+
+    def rgbToPixel(self, arg0: int, arg1: ColorModel) -> int: ...
+
+
+class SurfaceManager:
+
+  def acceleratedSurfaceLost(self) -> None: ...
+
+  def flush(self) -> None: ...
+
+  def getCacheData(self, arg0: object) -> object: ...
+
+  def getCapabilities(self, arg0: GraphicsConfiguration) -> ImageCapabilities: ...
+
+  def getPrimarySurfaceData(self) -> SurfaceData: ...
+
+  def restoreContents(self) -> SurfaceData: ...
+
+  def setAccelerationPriority(self, arg0: float) -> None: ...
+
+  def setCacheData(self, arg0: object, arg1: object) -> None: ...
+
+  @staticmethod
+  def getImageScaleX(arg0: Image) -> float: ...
+
+  @staticmethod
+  def getImageScaleY(arg0: Image) -> float: ...
+
+  @staticmethod
+  def getManager(arg0: Image) -> SurfaceManager: ...
+
+  @staticmethod
+  def setImageAccessor(arg0: SurfaceManager.ImageAccessor) -> None: ...
+
+  @staticmethod
+  def setManager(arg0: Image, arg1: SurfaceManager) -> None: ...
+
+  def __init__(self): ...
+
+  class ImageAccessor:
+
+    def getSurfaceManager(self, arg0: Image) -> SurfaceManager: ...
+
+    def setSurfaceManager(self, arg0: Image, arg1: SurfaceManager) -> None: ...
+
+    def __init__(self): ...
+
+  class ImageCapabilitiesGc(ImageCapabilities):
+
+    def isAccelerated(self) -> bool: ...
+
+    def __init__(self, arg0: SurfaceManager, arg1: GraphicsConfiguration): ...
+
+  class FlushableCacheData:
+
+    def flush(self, arg0: bool) -> bool: ...
+
+  class ProxiedGraphicsConfig:
+
+    def getProxyKey(self) -> object: ...
+

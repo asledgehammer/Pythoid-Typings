@@ -1,0 +1,219 @@
+from typing import Any, overload, TypeVar
+from java.lang.annotation import Annotation
+from java.lang import Iterable
+from java.util import ArrayList, HashMap
+from zombie.ai.permission import IStatePermissions
+from zombie.characters import IsoGameCharacter, IsoZombie, SurvivorGroup, IsoPlayer, Stance, MoveDeltaModifiers, ZombieGroup
+from zombie.core.skinnedmodel.advancedanimation import AnimEvent
+from zombie.iso import Vector2, IsoMovingObject, Vector3, IsoObject
+from zombie.iso.objects import IsoDoor, IsoThumpable, IsoWindow
+
+class AIBrainPlayerControlVars:
+
+  def __init__(self):
+    self.baiming: bool
+    self.bbannedattacking: bool
+    self.bmelee: bool
+    self.brunning: bool
+    self.initiateattack: bool
+    self.justmoved: bool
+    self.strafex: float
+    self.strafey: float
+
+
+class GameCharacterAIBrain:
+
+  def AddBlockedMemory(self, ttx: int, tty: int, ttz: int) -> None: ...
+
+  def HasBlockedMemory(self, lx: int, ly: int, lz: int, x: int, y: int, z: int) -> bool: ...
+
+  def getCharacter(self) -> IsoGameCharacter: ...
+
+  def getCloseZombieCount(self) -> int: ...
+
+  @overload
+  def getClosestChasingZombie(self) -> IsoZombie: ...
+
+  @overload
+  def getClosestChasingZombie(self, recurse: bool) -> IsoZombie: ...
+
+  def getClosestChasingZombies(self, num: int) -> ArrayList[IsoZombie]: ...
+
+  def getGroup(self) -> SurvivorGroup: ...
+
+  def getOrder(self) -> str: ...
+
+  def postUpdateHuman(self, isoPlayer: IsoPlayer) -> None: ...
+
+  def renderlast(self) -> None: ...
+
+  def setOrder(self, order: str) -> None: ...
+
+  def update(self) -> None: ...
+
+  def __init__(self, character: IsoGameCharacter):
+    self.aifocuspoint: Vector2
+    self.aitarget: IsoMovingObject
+    self.allowlongtermtick: bool
+    self.blockedmemories: HashMap[Vector3, ArrayList[Vector3]]
+    self.chasingzombies: ArrayList[IsoZombie]
+    self.controlledbyadvancedpathfinder: bool
+    self.humancontrolvars: AIBrainPlayerControlVars
+    self.isai: bool
+    self.isinmeta: bool
+    self.nextpathnodeinvalidated: bool
+    self.nextpathtarget: Vector3
+    self.spottedcharacters: ArrayList[IsoGameCharacter]
+    self.stance: Stance
+    self.stepbehaviors: bool
+    self.teammatechasingzombies: ArrayList[IsoZombie]
+
+
+class KnownBlockedEdges:
+
+  @overload
+  def init(self, other: KnownBlockedEdges) -> KnownBlockedEdges: ...
+
+  @overload
+  def init(self, x: int, y: int, z: int) -> KnownBlockedEdges: ...
+
+  @overload
+  def init(self, x: int, y: int, z: int, w: bool, n: bool) -> KnownBlockedEdges: ...
+
+  def isBlocked(self, otherX: int, otherY: int) -> bool: ...
+
+  def release(self) -> None: ...
+
+  @staticmethod
+  def alloc() -> KnownBlockedEdges: ...
+
+  @staticmethod
+  def releaseAll(objs: ArrayList[KnownBlockedEdges]) -> None: ...
+
+  def __init__(self):
+    self.n: bool
+    self.w: bool
+    self.x: int
+    self.y: int
+    self.z: int
+
+
+class MapKnowledge:
+
+  def forget(self) -> None: ...
+
+  @overload
+  def getKnownBlockedEdges(self) -> ArrayList[KnownBlockedEdges]: ...
+
+  @overload
+  def getKnownBlockedEdges(self, x: int, y: int, z: int) -> KnownBlockedEdges: ...
+
+  def getOrCreateKnownBlockedEdges(self, x: int, y: int, z: int) -> KnownBlockedEdges: ...
+
+  @overload
+  def setKnownBlockedDoor(self, object: IsoDoor, blocked: bool) -> None: ...
+
+  @overload
+  def setKnownBlockedDoor(self, object: IsoThumpable, blocked: bool) -> None: ...
+
+  def setKnownBlockedEdgeN(self, x: int, y: int, z: int, blocked: bool) -> None: ...
+
+  def setKnownBlockedEdgeW(self, x: int, y: int, z: int, blocked: bool) -> None: ...
+
+  def setKnownBlockedWindow(self, object: IsoWindow, blocked: bool) -> None: ...
+
+  def setKnownBlockedWindowFrame(self, object: IsoObject, blocked: bool) -> None: ...
+
+  def __init__(self): ...
+
+
+class State:
+
+  def animEvent(self, owner: IsoGameCharacter, event: AnimEvent) -> None: ...
+
+  def enter(self, owner: IsoGameCharacter) -> None: ...
+
+  def execute(self, owner: IsoGameCharacter) -> None: ...
+
+  def exit(self, owner: IsoGameCharacter) -> None: ...
+
+  def getDeltaModifiers(self, owner: IsoGameCharacter, modifiers: MoveDeltaModifiers) -> None: ...
+
+  def getName(self) -> str: ...
+
+  def getStatePermissions(self) -> IStatePermissions: ...
+
+  def isAttacking(self, owner: IsoGameCharacter) -> bool: ...
+
+  def isDoingActionThatCanBeCancelled(self) -> bool: ...
+
+  def isIgnoreCollide(self, owner: IsoGameCharacter, fromX: int, fromY: int, fromZ: int, toX: int, toY: int, toZ: int) -> bool: ...
+
+  def isMoving(self, owner: IsoGameCharacter) -> bool: ...
+
+  def __init__(self): ...
+
+
+class StateMachine:
+
+  @overload
+  def changeState(self, newState: State, subStates: Iterable[State]) -> None: ...
+
+  @overload
+  def changeState(self, newState: State, subStates: Iterable[State], restart: bool) -> None: ...
+
+  def getCurrent(self) -> State: ...
+
+  def getPrevious(self) -> State: ...
+
+  def getSubStateAt(self, idx: int) -> State: ...
+
+  def getSubStateCount(self) -> int: ...
+
+  def isLocked(self) -> bool: ...
+
+  def isSubstate(self, substate: State) -> bool: ...
+
+  def revertToPreviousState(self, sender: State) -> None: ...
+
+  def setLocked(self, lock: bool) -> None: ...
+
+  def stateAnimEvent(self, stateLayer: int, event: AnimEvent) -> None: ...
+
+  def update(self) -> None: ...
+
+  def __init__(self, owner: IsoGameCharacter):
+    self.activestatechanged: int
+
+  class SubstateSlot:
+
+    def getState(self) -> State: ...
+
+    def isEmpty(self) -> bool: ...
+
+
+class WalkingOnTheSpot:
+
+  def check(self, x1: float, y1: float) -> bool: ...
+
+  def reset(self, x1: float, y1: float) -> None: ...
+
+  def __init__(self): ...
+
+
+class ZombieGroupManager:
+
+  instance: ZombieGroupManager
+
+  def Reset(self) -> None: ...
+
+  def findNearestGroup(self, x: float, y: float, z: float) -> ZombieGroup: ...
+
+  def preupdate(self) -> None: ...
+
+  def shouldBeInGroup(self, zombie: IsoZombie) -> bool: ...
+
+  def update(self, zombie: IsoZombie) -> None: ...
+
+  def __init__(self): ...
+

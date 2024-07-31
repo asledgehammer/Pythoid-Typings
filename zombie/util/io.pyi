@@ -1,0 +1,219 @@
+from typing import Any, overload, TypeVar
+from java.lang.annotation import Annotation
+from java.lang import Enum
+from java.nio import ByteBuffer
+
+class BitHeader:
+
+  DEBUG: bool
+
+  @staticmethod
+  @overload
+  def allocRead(size: BitHeader.HeaderSize, buffer: ByteBuffer) -> BitHeaderRead: ...
+
+  @staticmethod
+  @overload
+  def allocRead(size: BitHeader.HeaderSize, buffer: ByteBuffer, allocOnly: bool) -> BitHeaderRead: ...
+
+  @staticmethod
+  @overload
+  def allocWrite(size: BitHeader.HeaderSize, buffer: ByteBuffer) -> BitHeaderWrite: ...
+
+  @staticmethod
+  @overload
+  def allocWrite(size: BitHeader.HeaderSize, buffer: ByteBuffer, allocOnly: bool) -> BitHeaderWrite: ...
+
+  @staticmethod
+  def debug_print() -> None: ...
+
+  class HeaderSize(Enum):
+
+    Byte: BitHeader.HeaderSize
+
+    Integer: BitHeader.HeaderSize
+
+    Long: BitHeader.HeaderSize
+
+    Short: BitHeader.HeaderSize
+
+    @staticmethod
+    def valueOf(arg0: str) -> BitHeader.HeaderSize: ...
+
+    @staticmethod
+    def values() -> list[BitHeader.HeaderSize]: ...
+
+  class BitHeaderByte(BitHeader.BitHeaderBase):
+
+    def getLen(self) -> int: ...
+
+    def release(self) -> None: ...
+
+  class BitHeaderShort(BitHeader.BitHeaderBase):
+
+    def getLen(self) -> int: ...
+
+    def release(self) -> None: ...
+
+  class BitHeaderInt(BitHeader.BitHeaderBase):
+
+    def getLen(self) -> int: ...
+
+    def release(self) -> None: ...
+
+  class BitHeaderLong(BitHeader.BitHeaderBase):
+
+    def getLen(self) -> int: ...
+
+    def release(self) -> None: ...
+
+  class BitHeaderBase:
+
+    @overload
+    def addFlags(self, flags: int) -> None: ...
+
+    @overload
+    def addFlags(self, flags: int) -> None: ...
+
+    @overload
+    def addFlags(self, flags: int) -> None: ...
+
+    @overload
+    def addFlags(self, flags: int) -> None: ...
+
+    @overload
+    def create(self) -> None: ...
+
+    @overload
+    def create(self) -> None: ...
+
+    @overload
+    def equals(self, flags: int) -> bool: ...
+
+    @overload
+    def equals(self, flags: int) -> bool: ...
+
+    @overload
+    def equals(self, flags: int) -> bool: ...
+
+    @overload
+    def equals(self, flags: int) -> bool: ...
+
+    @overload
+    def equals(self, flags: int) -> bool: ...
+
+    @overload
+    def equals(self, flags: int) -> bool: ...
+
+    @overload
+    def getLen(self) -> int: ...
+
+    @overload
+    def getLen(self) -> int: ...
+
+    @overload
+    def getLen(self) -> int: ...
+
+    @overload
+    def getStartPosition(self) -> int: ...
+
+    @overload
+    def getStartPosition(self) -> int: ...
+
+    @overload
+    def getStartPosition(self) -> int: ...
+
+    @overload
+    def hasFlags(self, flags: int) -> bool: ...
+
+    @overload
+    def hasFlags(self, flags: int) -> bool: ...
+
+    @overload
+    def hasFlags(self, flags: int) -> bool: ...
+
+    @overload
+    def hasFlags(self, flags: int) -> bool: ...
+
+    @overload
+    def hasFlags(self, flags: int) -> bool: ...
+
+    @overload
+    def hasFlags(self, flags: int) -> bool: ...
+
+    @overload
+    def read(self) -> None: ...
+
+    @overload
+    def read(self) -> None: ...
+
+    @overload
+    def release(self) -> None: ...
+
+    @overload
+    def release(self) -> None: ...
+
+    @overload
+    def release(self) -> None: ...
+
+    @overload
+    def write(self) -> None: ...
+
+    @overload
+    def write(self) -> None: ...
+
+    def __init__(self): ...
+
+
+class BitHeaderRead:
+
+  @overload
+  def equals(self, flags: int) -> bool: ...
+
+  @overload
+  def equals(self, flags: int) -> bool: ...
+
+  def getLen(self) -> int: ...
+
+  def getStartPosition(self) -> int: ...
+
+  @overload
+  def hasFlags(self, flags: int) -> bool: ...
+
+  @overload
+  def hasFlags(self, flags: int) -> bool: ...
+
+  def read(self) -> None: ...
+
+  def release(self) -> None: ...
+
+
+class BitHeaderWrite:
+
+  @overload
+  def addFlags(self, flags: int) -> None: ...
+
+  @overload
+  def addFlags(self, flags: int) -> None: ...
+
+  def create(self) -> None: ...
+
+  @overload
+  def equals(self, flags: int) -> bool: ...
+
+  @overload
+  def equals(self, flags: int) -> bool: ...
+
+  def getLen(self) -> int: ...
+
+  def getStartPosition(self) -> int: ...
+
+  @overload
+  def hasFlags(self, flags: int) -> bool: ...
+
+  @overload
+  def hasFlags(self, flags: int) -> bool: ...
+
+  def release(self) -> None: ...
+
+  def write(self) -> None: ...
+

@@ -1,0 +1,66 @@
+from typing import Any, overload, TypeVar
+from java.lang.annotation import Annotation
+from java.io import File, Writer
+from java.lang import Class
+from java.util import List, Map
+from se.krka.kahlua.integration.expose import MethodDebugInformation, ClassDebugInformation
+
+class ApiDocumentationExporter:
+
+  @overload
+  def getAllClasses(self) -> List[Class[Any]]: ...
+
+  @overload
+  def getAllClasses(self) -> List[Class[Any]]: ...
+
+  @overload
+  def getChildrenForClass(self, arg0: Class[Any]) -> List[Class[Any]]: ...
+
+  @overload
+  def getChildrenForClass(self, arg0: Class[Any]) -> List[Class[Any]]: ...
+
+  @overload
+  def getFunctionsForClass(self, arg0: Class[Any]) -> List[MethodDebugInformation]: ...
+
+  @overload
+  def getFunctionsForClass(self, arg0: Class[Any]) -> List[MethodDebugInformation]: ...
+
+  @overload
+  def getMethodsForClass(self, arg0: Class[Any]) -> List[MethodDebugInformation]: ...
+
+  @overload
+  def getMethodsForClass(self, arg0: Class[Any]) -> List[MethodDebugInformation]: ...
+
+  @overload
+  def getRootClasses(self) -> List[Class[Any]]: ...
+
+  @overload
+  def getRootClasses(self) -> List[Class[Any]]: ...
+
+  def setupHierarchy(self) -> None: ...
+
+  def __init__(self, arg0: Map[Class[Any], ClassDebugInformation]): ...
+
+
+class ApiInformation:
+
+  def getAllClasses(self) -> List[Class[Any]]: ...
+
+  def getChildrenForClass(self, arg0: Class[Any]) -> List[Class[Any]]: ...
+
+  def getFunctionsForClass(self, arg0: Class[Any]) -> List[MethodDebugInformation]: ...
+
+  def getMethodsForClass(self, arg0: Class[Any]) -> List[MethodDebugInformation]: ...
+
+  def getRootClasses(self) -> List[Class[Any]]: ...
+
+
+class DokuWikiPrinter:
+
+  def process(self) -> None: ...
+
+  @overload
+  def __init__(self, arg0: File, arg1: ApiInformation): ...
+  @overload
+  def __init__(self, arg0: Writer, arg1: ApiInformation): ...
+

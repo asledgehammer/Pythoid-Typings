@@ -1,0 +1,106 @@
+from typing import Any, overload, TypeVar
+from java.lang.annotation import Annotation
+
+class BitInputStream:
+
+  BIG_ENDIAN: int
+
+  LITTLE_ENDIAN: int
+
+  def align(self) -> None: ...
+
+  def getBit(self) -> bool: ...
+
+  @overload
+  def getInt(self, arg0: HuffmanNode) -> int: ...
+
+  @overload
+  def getInt(self, arg0: int) -> int: ...
+
+  def getLong(self, arg0: int) -> int: ...
+
+  def getSignedInt(self, arg0: int) -> int: ...
+
+  @overload
+  def readSignedRice(self, arg0: int) -> int: ...
+
+  @overload
+  def readSignedRice(self, arg0: int, arg1: list[int], arg2: int, arg3: int) -> None: ...
+
+  def setEndian(self, arg0: int) -> None: ...
+
+
+class ByteArrayBitInputStream:
+
+  BIG_ENDIAN: int
+
+  LITTLE_ENDIAN: int
+
+  @overload
+  def align(self) -> None: ...
+
+  @overload
+  def align(self) -> None: ...
+
+  @overload
+  def getBit(self) -> bool: ...
+
+  @overload
+  def getBit(self) -> bool: ...
+
+  @overload
+  def getInt(self, arg0: HuffmanNode) -> int: ...
+
+  @overload
+  def getInt(self, arg0: HuffmanNode) -> int: ...
+
+  @overload
+  def getInt(self, arg0: int) -> int: ...
+
+  @overload
+  def getInt(self, arg0: int) -> int: ...
+
+  @overload
+  def getLong(self, arg0: int) -> int: ...
+
+  @overload
+  def getLong(self, arg0: int) -> int: ...
+
+  @overload
+  def getSignedInt(self, arg0: int) -> int: ...
+
+  @overload
+  def getSignedInt(self, arg0: int) -> int: ...
+
+  def getSource(self) -> list[int]: ...
+
+  @overload
+  def readSignedRice(self, arg0: int) -> int: ...
+
+  @overload
+  def readSignedRice(self, arg0: int) -> int: ...
+
+  @overload
+  def readSignedRice(self, arg0: int, arg1: list[int], arg2: int, arg3: int) -> None: ...
+
+  @overload
+  def readSignedRice(self, arg0: int, arg1: list[int], arg2: int, arg3: int) -> None: ...
+
+  @overload
+  def setEndian(self, arg0: int) -> None: ...
+
+  @overload
+  def setEndian(self, arg0: int) -> None: ...
+
+  @overload
+  def __init__(self, arg0: list[int]): ...
+  @overload
+  def __init__(self, arg0: list[int], arg1: int): ...
+
+
+class HuffmanNode:
+
+  def setNewValue(self, arg0: int, arg1: int) -> bool: ...
+
+  def __init__(self): ...
+
