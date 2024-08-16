@@ -218,6 +218,15 @@ class CustomBuffer[SELF](Pointer.Default):
   def toString(self) -> str: ...
 
 
+class FunctionProvider:
+
+  @overload
+  def getFunctionAddress(self, arg0: CharSequence) -> int: ...
+
+  @overload
+  def getFunctionAddress(self, arg0: ByteBuffer) -> int: ...
+
+
 class MemoryStack(Pointer.Default):
 
   @overload
@@ -871,6 +880,69 @@ class Pointer:
     def hashCode(self) -> int: ...
 
     def toString(self) -> str: ...
+
+
+class SharedLibrary:
+
+  BITS32: bool
+
+  BITS64: bool
+
+  CLONG_SHIFT: int
+
+  CLONG_SIZE: int
+
+  POINTER_SHIFT: int
+
+  POINTER_SIZE: int
+
+  def address(self) -> int: ...
+
+  def close(self) -> None: ...
+
+  def free(self) -> None: ...
+
+  @overload
+  def getFunctionAddress(self, arg0: CharSequence) -> int: ...
+
+  @overload
+  def getFunctionAddress(self, arg0: ByteBuffer) -> int: ...
+
+  def getName(self) -> str: ...
+
+  def getPath(self) -> str: ...
+
+  class Delegate:
+
+    def address(self) -> int: ...
+
+    def free(self) -> None: ...
+
+    @overload
+    def getName(self) -> str: ...
+
+    @overload
+    def getName(self) -> str: ...
+
+    @overload
+    def getPath(self) -> str: ...
+
+    @overload
+    def getPath(self) -> str: ...
+
+  class Default(Pointer.Default):
+
+    @overload
+    def getName(self) -> str: ...
+
+    @overload
+    def getName(self) -> str: ...
+
+    @overload
+    def getPath(self) -> str: ...
+
+    @overload
+    def getPath(self) -> str: ...
 
 
 class Struct(Pointer.Default):

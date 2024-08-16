@@ -27,6 +27,7 @@ class ClassDebugInformation:
 
 class IterableExposer:
 
+  # @LuaMethod
   def (self, arg0: Iterable[Any]) -> object: ...
 
   def __init__(self): ...
@@ -34,6 +35,7 @@ class IterableExposer:
 
 class LuaJavaClassExposer:
 
+  # @LuaMethod
   def definition(self, arg0: object) -> str: ...
 
   def destroy(self) -> None: ...

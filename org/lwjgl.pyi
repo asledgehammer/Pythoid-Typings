@@ -1,7 +1,72 @@
 from typing import Any, overload, TypeVar
 from java.lang.annotation import Annotation
-from java.nio import ByteBuffer, DoubleBuffer, FloatBuffer, IntBuffer, LongBuffer, ShortBuffer
+from java.lang import Enum
+from java.nio import ByteBuffer, CharBuffer, DoubleBuffer, FloatBuffer, IntBuffer, LongBuffer, ShortBuffer
 from org.lwjgl.system import CustomBuffer, Pointer
+
+T = TypeVar('T', default=Any)
+
+class BufferUtils:
+
+  @staticmethod
+  def createByteBuffer(arg0: int) -> ByteBuffer: ...
+
+  @staticmethod
+  def createCLongBuffer(arg0: int) -> CLongBuffer: ...
+
+  @staticmethod
+  def createCharBuffer(arg0: int) -> CharBuffer: ...
+
+  @staticmethod
+  def createDoubleBuffer(arg0: int) -> DoubleBuffer: ...
+
+  @staticmethod
+  def createFloatBuffer(arg0: int) -> FloatBuffer: ...
+
+  @staticmethod
+  def createIntBuffer(arg0: int) -> IntBuffer: ...
+
+  @staticmethod
+  def createLongBuffer(arg0: int) -> LongBuffer: ...
+
+  @staticmethod
+  def createPointerBuffer(arg0: int) -> PointerBuffer: ...
+
+  @staticmethod
+  def createShortBuffer(arg0: int) -> ShortBuffer: ...
+
+  @staticmethod
+  @overload
+  def zeroBuffer(arg0: ByteBuffer) -> None: ...
+
+  @staticmethod
+  @overload
+  def zeroBuffer(arg0: CharBuffer) -> None: ...
+
+  @staticmethod
+  @overload
+  def zeroBuffer(arg0: DoubleBuffer) -> None: ...
+
+  @staticmethod
+  @overload
+  def zeroBuffer(arg0: FloatBuffer) -> None: ...
+
+  @staticmethod
+  @overload
+  def zeroBuffer(arg0: IntBuffer) -> None: ...
+
+  @staticmethod
+  @overload
+  def zeroBuffer(arg0: LongBuffer) -> None: ...
+
+  @staticmethod
+  @overload
+  def zeroBuffer(arg0: ShortBuffer) -> None: ...
+
+  @staticmethod
+  @overload
+  def zeroBuffer(arg0: T) -> None: ...
+
 
 class CLongBuffer(CustomBuffer):
 
@@ -215,4 +280,35 @@ class PointerBuffer(CustomBuffer):
   @staticmethod
   @overload
   def create(arg0: int, arg1: int) -> PointerBuffer: ...
+
+
+class Version:
+
+  BUILD_TYPE: Version.BuildType
+
+  VERSION_MAJOR: int
+
+  VERSION_MINOR: int
+
+  VERSION_REVISION: int
+
+  @staticmethod
+  def getVersion() -> str: ...
+
+  @staticmethod
+  def main(arg0: list[str]) -> None: ...
+
+  class BuildType(Enum):
+
+    ALPHA: Version.BuildType
+
+    BETA: Version.BuildType
+
+    STABLE: Version.BuildType
+
+    @staticmethod
+    def valueOf(arg0: str) -> Version.BuildType: ...
+
+    @staticmethod
+    def values() -> list[Version.BuildType]: ...
 
